@@ -1,0 +1,83 @@
+.button-float {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(#b700ff 60%, rgba(255, 255, 255, 1) 62%);
+    border-radius: 50%;
+    position: relative;
+    display: block;
+    margin: 100px auto;
+    box-shadow: 0px 0px 25px 3px rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.button-float:hover {
+    animation-play-state: paused;
+    box-shadow: inset 0px 0px 15px 2px rgba(255, 255, 255, 0.75), 0px 0px 15px 4px rgba(255, 255, 255, 0.75);
+}
+
+.button-float i {
+    margin: 2.1vh;
+    font-size: 2.7vw;
+}
+
+.attention {}
+
+/* pulse wave */
+.attention:before {
+    content: "";
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
+    -webkit-animation: pulsate1 2s;
+    animation: pulsate1 2s;
+    -webkit-animation-direction: forwards;
+    animation-direction: forwards;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-timing-function: steps;
+    animation-timing-function: steps;
+    opacity: 1;
+    border-radius: 50%;
+    border: 5px solid rgba(255, 255, 255, .75);
+    top: -25%;
+    left: -25%;
+    background: rgba(198, 16, 0, 0);
+}
+
+@-webkit-keyframes pulsate1 {
+    0% {
+        -webkit-transform: scale(0.6);
+        transform: scale(0.6);
+        opacity: 1;
+        box-shadow: inset 0px 0px 25px 3px rgba(255, 255, 255, 0.75), 0px 0px 25px 10px rgba(255, 255, 255, 0.75);
+    }
+
+    100% {
+        -webkit-transform: scale(1.3);
+        transform: scale(1.3);
+        opacity: 0;
+        box-shadow: none;
+    }
+}
+
+@keyframes pulsate1 {
+    0% {
+        -webkit-transform: scale(0.6);
+        transform: scale(0.6);
+        opacity: 1;
+        box-shadow: inset 0px 0px 25px 3px rgba(255, 255, 255, 0.75), 0px 0px 25px 10px rgba(255, 255, 255, 0.75);
+    }
+
+    100% {
+        -webkit-transform: scale(1.3, 1.3);
+        transform: scale(1.3);
+        opacity: 0;
+        box-shadow: none;
+
+    }
+}

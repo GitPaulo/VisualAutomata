@@ -1,0 +1,26 @@
+/* pop out class */
+.popout {
+    position: fixed;
+    animation: popout 1s ease;
+    -webkit-animation: popout .8s ease;
+}
+
+@keyframes popout {
+    from {
+        transform: scale(0)
+    }
+
+    to {
+        transform: scale(1)
+    }
+}
+
+@-webkit-keyframes popout {
+    from {
+        -webkit-transform: scale(0)
+    }
+
+    to {
+        -webkit-transform: scale(1)
+    }
+}

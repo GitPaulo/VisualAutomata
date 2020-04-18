@@ -1,0 +1,194 @@
+<html>
+
+<head>
+    <!-- Libs (CSS) -->
+
+    <!-- Libs (JS) -->
+    <script src="./js/libs/pixi.js"></script>
+    <script src="./js/libs/jscolor.js"></script>
+    <script src="./js/libs/codemirror.js"></script>
+    <!-- Modules (JS) -->
+    <script src="./js/modules/dragger.js"></script>
+    <!-- Style (CSS) -->
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <!-- Start View -->
+    <view id="start">
+        <!-- Banner -->
+        <div id="banner">
+            <h1 id="title">VisualAutomata</h1>
+            <div id="subtitle">
+                <a id="githubButton"><i class="fab fa-github"></i>&ensp;Github</a>
+                <a id="settingsButton"><i class="fas fa-cog"></i>&ensp;Settings</a>
+                <a id="documentationButton"><i class="fab fa-readme"></i>&ensp;Documentation</a>
+            </div>
+            <div class="button-arrow">
+                <a id="startToggle" class="arrow-effect" href="#">
+                    Let's Go!
+                    <span class="bg"></span>
+                </a>
+            </div>
+        </div>
+        <!-- Settings Popup -->
+        <div id="settings" class="popout">
+            <br>
+            <h1>Settings</h1>
+            <hr>
+            <form style="padding-left: 15%; width: 85%;">
+                <fieldset>
+                    <label for="nameField">Input Test</label>
+                    <input type="text" placeholder="Testing123" id="nameField">
+                    <label for="ageRangeField">Combobox Test</label>
+                    <select id="ageRangeField">
+                        <option value="0-13">0-13</option>
+                        <option value="14-17">14-17</option>
+                        <option value="18-23">18-23</option>
+                        <option value="24+">24+</option>
+                    </select>
+                    <label for="commentField">Multiline Test</label>
+                    <textarea placeholder="Hello World …" id="commentField"></textarea>
+                    <div>
+                        <input type="checkbox" id="confirmField">
+                        <label class="label-inline" for="confirmField">Checkbox Test</label>
+                    </div>
+                    <code>
+                        This is a line.
+                        <br>
+                        This is another line.
+                        <br>
+                        This is another another line.
+                        <br>
+                        This is another another another line.
+                        <br>
+                        This is another another antoher another line.
+                        <br>
+                        This is the end.
+                    </code>
+                    <br>
+                    <br>
+                    <div>
+                    <input class="button-primary" type="submit" value="Do nothing">
+                    <button id="settingsClose">CLOSE</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </view>
+    <!-- Content View-->
+    <view id="main">
+        <!-- Menu Button -->
+        <div id="menuDrag">
+            <a class="button-float attention" href="#" id="menuOpen">
+                <i class="fas fa-toolbox"></i>
+            </a>
+        </div>
+        <!-- Menu Popup -->
+        <div class="tabs slide" id="menu">
+            <span class="close" id="menuClose">&times;</span>
+            <input type="radio" id="tab1" name="tab-control" checked>
+            <input type="radio" id="tab2" name="tab-control">
+            <input type="radio" id="tab3" name="tab-control">
+            <input type="radio" id="tab4" name="tab-control">
+            <ul>
+                <li title="Builder">
+                    <label for="tab1" role="button">
+                        <i class="fas fa-tools"></i>&ensp;
+                        <br><span>Builder</span>
+                    </label>
+                </li>
+                <li title="Acceptor">
+                    <label for="tab2" role="button">
+                        <i class="fas fa-project-diagram"></i>&ensp;
+                        <br><span>Acceptor</span>
+                    </label>
+                </li>
+                <li title="Logger">
+                    <label for="tab3" role="button">
+                        <i class="fas fa-file-medical-alt"></i>&ensp;
+                        <br><span>Logger</span>
+                    </label>
+                </li>
+                <li title="Storage">
+                    <label for="tab4" role="button">
+                        <i class="fas fa-database"></i>&ensp;
+                        <br><span>Storage</span>
+                    </label>
+                </li>
+            </ul>
+            <div class="slider">
+                <div class="indicator"></div>
+            </div>
+            <div class="content">
+                <section>
+                    <h2>Builder</h2>
+                    <hr>
+                    <h1 style="text-align: center;">(TODO)</h1>
+                </section>
+                <section>
+                    <h2>Acceptor</h2>
+                    <div class="panel">
+                        <code id="acceptorText">
+                            Automaton Data
+                            <br>
+                            --------------
+                            <br>
+                            ID: ""
+                            <br>
+                            Type: ""
+                            <br>
+                            States = []
+                            <br>
+                            Alphabet = []
+                            <br>
+                            Transitions = []
+                        </code>
+                        <hr>
+                        <div id="acceptorControl">
+                            <textarea placeholder="<Input String Here>" id="acceptorString"></textarea>
+                            <button id="acceptorRun">Run</button>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h2>Logger</h2>
+                    <div class="panel">
+                        <div class="preCMTextPanel" id="loggerText"></div>
+                        <div id="loggerControl">
+                            <button id="loggerClear">Clear</button>
+                            <button id="loggerExport">Export</button>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h2>Storage</h2>
+                    <div class="panel">
+                        <div id="storageDisplay">
+                            <table>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Automaton-Type</th>
+                                    <th>Size</th>
+                                    <th>Date</th>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="storageControl">
+                            <button id="storageLoad">Load</button>
+                            <button id="storageSave">Save</button>
+                            <button id="storageDelete">Delete</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- Canvas-->
+        <div class="canvas" id="canvas"></div>
+    </view>
+</body>
+
+<!-- Page Logic -->
+<script src="./js/index.js"></script>
+
+</html>
