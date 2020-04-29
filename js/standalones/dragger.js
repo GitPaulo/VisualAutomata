@@ -1,4 +1,4 @@
-function dragger(elmnt) {
+function Dragger(elmnt) {
     var pos1 = 0,
         pos2 = 0,
         pos3 = 0,
@@ -44,6 +44,4 @@ function dragger(elmnt) {
         document.onmouseup = null;
         document.onmousemove = null;
     }
-
-    console.log(`Dragger behavior added to ${elmnt.id}`);
 }

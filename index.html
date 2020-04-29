@@ -1,117 +1,81 @@
 <html>
 
 <head>
-    <!-- Libs (CSS) -->
-
     <!-- Libs (JS) -->
     <script src="./js/libs/pixi.js"></script>
     <script src="./js/libs/jscolor.js"></script>
-    <script src="./js/libs/codemirror.js"></script>
-    <!-- Modules (JS) -->
-    <script src="./js/modules/dragger.js"></script>
+    <!-- "Modules" AKA "Standalones" (JS) -->
+    <script src="./js/standalones/dragger.js"></script>
+    <script src="./js/standalones/storage.js"></script>
+    <script src="./js/standalones/logger.js"></script>
+    <script src="./js/standalones/utils.js"></script>
     <!-- Style (CSS) -->
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
-    <!-- Start View -->
+    <!----------------------->
+    <!--    View: Start   --->
+    <!----------------------->
     <view id="start">
         <!-- Banner -->
         <div id="banner">
-            <h1 id="title">VisualAutomata</h1>
-            <div id="subtitle">
-                <a id="githubButton"><i class="fab fa-github"></i>&ensp;Github</a>
-                <a id="settingsButton"><i class="fas fa-cog"></i>&ensp;Settings</a>
-                <a id="documentationButton"><i class="fab fa-readme"></i>&ensp;Documentation</a>
+            <h1>VisualAutomata</h1>
+            <div id="links">
+                <a id="link-github"><i class="fab fa-github"></i>&ensp;Github</a>
+                <a id="open-settings"><i class="fas fa-cog"></i>&ensp;Settings</a>
+                <a id="link-documentation"><i class="fab fa-readme"></i>&ensp;Documentation</a>
             </div>
-            <div class="button-arrow">
-                <a id="startToggle" class="arrow-effect" href="#">
+            <div id="start-toggle" class="button-arrow">
+                <a class="arrow-effect" href="#">
                     Let's Go!
                     <span class="bg"></span>
                 </a>
             </div>
         </div>
-        <!-- Settings Popup -->
+        <!-- Settings -->
         <div id="settings" class="popout">
-            <br>
-            <h1>Settings</h1>
-            <hr>
-            <form style="padding-left: 15%; width: 85%;">
-                <fieldset>
-                    <label for="nameField">Input Test</label>
-                    <input type="text" placeholder="Testing123" id="nameField">
-                    <label for="ageRangeField">Combobox Test</label>
-                    <select id="ageRangeField">
-                        <option value="0-13">0-13</option>
-                        <option value="14-17">14-17</option>
-                        <option value="18-23">18-23</option>
-                        <option value="24+">24+</option>
-                    </select>
-                    <label for="commentField">Multiline Test</label>
-                    <textarea placeholder="Hello World …" id="commentField"></textarea>
-                    <div>
-                        <input type="checkbox" id="confirmField">
-                        <label class="label-inline" for="confirmField">Checkbox Test</label>
-                    </div>
-                    <code>
-                        This is a line.
-                        <br>
-                        This is another line.
-                        <br>
-                        This is another another line.
-                        <br>
-                        This is another another another line.
-                        <br>
-                        This is another another antoher another line.
-                        <br>
-                        This is the end.
-                    </code>
-                    <br>
-                    <br>
-                    <div>
-                    <input class="button-primary" type="submit" value="Do nothing">
-                    <button id="settingsClose">CLOSE</button>
-                    </div>
-                </fieldset>
-            </form>
+            <button id="close-settings">CLOSE</button>
         </div>
     </view>
-    <!-- Content View-->
+    <!----------------------->
+    <!--    View: Main    --->
+    <!----------------------->
     <view id="main">
-        <!-- Menu Button -->
-        <div id="menuDrag">
-            <a class="button-float attention" href="#" id="menuOpen">
+        <!-- Open Tools Button -->
+        <div id="open-tools-draggable">
+            <a id="open-tools" class="button-float attention" href="#"">
                 <i class="fas fa-toolbox"></i>
             </a>
         </div>
-        <!-- Menu Popup -->
-        <div class="tabs slide" id="menu">
-            <span class="close" id="menuClose">&times;</span>
-            <input type="radio" id="tab1" name="tab-control" checked>
-            <input type="radio" id="tab2" name="tab-control">
-            <input type="radio" id="tab3" name="tab-control">
-            <input type="radio" id="tab4" name="tab-control">
+        <!-- Tools -->
+        <div id="tools" class="tabs slide">
+            <span id="close-tools" class="close">&times;</span>
+            <input id="label-builder" type="radio" name="tab-control" checked>
+            <input id="label-acceptor" type="radio" name="tab-control">
+            <input id="label-logger" type="radio" name="tab-control">
+            <input id="label-storage" type="radio" name="tab-control">
             <ul>
                 <li title="Builder">
-                    <label for="tab1" role="button">
+                    <label for="label-builder" role="button">
                         <i class="fas fa-tools"></i>&ensp;
                         <br><span>Builder</span>
                     </label>
                 </li>
                 <li title="Acceptor">
-                    <label for="tab2" role="button">
+                    <label for="label-acceptor" role="button">
                         <i class="fas fa-project-diagram"></i>&ensp;
                         <br><span>Acceptor</span>
                     </label>
                 </li>
                 <li title="Logger">
-                    <label for="tab3" role="button">
+                    <label for="label-logger" role="button">
                         <i class="fas fa-file-medical-alt"></i>&ensp;
                         <br><span>Logger</span>
                     </label>
                 </li>
                 <li title="Storage">
-                    <label for="tab4" role="button">
+                    <label for="label-storage" role="button">
                         <i class="fas fa-database"></i>&ensp;
                         <br><span>Storage</span>
                     </label>
@@ -120,75 +84,142 @@
             <div class="slider">
                 <div class="indicator"></div>
             </div>
+            <!-- Tabbings -->
             <div class="content">
-                <section>
-                    <h2>Builder</h2>
+                <!-- Builder (tab) -->
+                <tab id="builder">
+                    <!-- Loader -->
+                    <div id="loader">
+                        <select id="automaton-selector">
+                            <option value="DFA">DFA</option>
+                            <option value="NFA">NFA</option>
+                            <option value="e-NFA">e-NFA</option>
+                            <option value="PDA">PDA</option>
+                        </select>
+                        <button id="load-loader">Load</button>
+                        <button id="reset-loader">Reset</button>
+                    </div>
                     <hr>
-                    <h1 style="text-align: center;">(TODO)</h1>
-                </section>
-                <section>
-                    <h2>Acceptor</h2>
-                    <div class="panel">
-                        <code id="acceptorText">
-                            Automaton Data
-                            <br>
-                            --------------
-                            <br>
-                            ID: ""
-                            <br>
-                            Type: ""
-                            <br>
-                            States = []
-                            <br>
-                            Alphabet = []
-                            <br>
-                            Transitions = []
-                        </code>
+                    <!-- Designer -->
+                    <div id="designer" class="disabled">
+                        <h5>Alphabet</h5>
+                        <input type="text" placeholder="" id="nameField">
+                        <div>
+                            <input type="checkbox" id="confirmField">
+                            <label class="label-inline" for="confirmField">Use RegEx?</label>
+                        </div>
+                        <h5>States</h5>
+                        <table id="myTable" style="border: 1px solid black">
+                            <tr>
+                                <td><input type="text" id="fname"></td>
+                                <td><input type="checkbox" id="confirmField">
+                                    <label class="label-inline" for="confirmField">Accepting?</label>
+                                </td>
+                                <td><input type="button" value="Remove" onclick="deleteRow('myTable',0)"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" id="fname"></td>
+                                <td><input type="checkbox" id="confirmField">
+                                    <label class="label-inline" for="confirmField">Accepting?</label>
+                                </td>
+                                <td><input type="button" value="Remove" onclick="deleteRow('myTable',0)"></td>
+                            </tr>
+                        </table>
+                        <button id="new-state-designer">Create State</button>
+                        <h5>Transitions</h5>
+                        <table id="myTable" style="border: 1px solid black">
+                            <tr>
+                                <td><input type="text" id="fname"></td>
+                                <td><input type="checkbox" id="confirmField">
+                                    <label class="label-inline" for="confirmField">Accepting?</label>
+                                </td>
+                                <td><input type="button" value="Remove" onclick="deleteRow('myTable',0)"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" id="fname"></td>
+                                <td><input type="checkbox" id="confirmField">
+                                    <label class="label-inline" for="confirmField">Accepting?</label>
+                                </td>
+                                <td><input type="button" value="Remove" onclick="deleteRow('myTable',0)"></td>
+                            </tr>
+                        </table>
+                        <button id="new-transition-designer">Create Transition</button>
                         <hr>
-                        <div id="acceptorControl">
-                            <textarea placeholder="<Input String Here>" id="acceptorString"></textarea>
-                            <button id="acceptorRun">Run</button>
-                        </div>
+                        <button id="deploy-designer">Deploy</button>
                     </div>
-                </section>
-                <section>
-                    <h2>Logger</h2>
-                    <div class="panel">
-                        <div class="preCMTextPanel" id="loggerText"></div>
-                        <div id="loggerControl">
-                            <button id="loggerClear">Clear</button>
-                            <button id="loggerExport">Export</button>
-                        </div>
+                </tab>
+                <!-- Acceptor (tab) -->
+                <tab id="acceptor" class="disabled">
+                    <code id="machine-data">
+                        Example Strings
+                        <br>
+                        --------------
+                        <br>
+                        Example1: "423213"
+                        <br>
+                        Example2: "44324323213"
+                    </code>
+                    <hr>
+                    <div class="control">
+                        <textarea id="acceptor-string" placeholder="<Input String Here>"></textarea>
+                        <button id="run-acceptor">Run</button>
                     </div>
-                </section>
-                <section>
-                    <h2>Storage</h2>
-                    <div class="panel">
-                        <div id="storageDisplay">
-                            <table>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Automaton-Type</th>
-                                    <th>Size</th>
-                                    <th>Date</th>
-                                </tr>
-                            </table>
-                        </div>
-                        <div id="storageControl">
-                            <button id="storageLoad">Load</button>
-                            <button id="storageSave">Save</button>
-                            <button id="storageDelete">Delete</button>
-                        </div>
+                </tab>
+                <!-- Logger (tab) -->
+                <tab id="logger">
+                    <textarea id="log-area"></textarea>
+                    <div class="control">
+                        <button id="clear-logger">Clear</button>
+                        <button id="export-logger">Export</button>
                     </div>
-                </section>
+                </tab>
+                <!-- Storage (tab) -->
+                <tab id="storage">
+                    <table id="storage-table">
+                        <tr>
+                            <th>ID</th>
+                            <th>Type</th>
+                            <th>Size</th>
+                            <th>Date</th>
+                        </tr>
+                    </table>
+                    <div class="control">
+                        <button id="load-storage">Load</button>
+                        <button id="save-storage">Save</button>
+                        <button id="delete-storage">Delete</button>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Canvas-->
-        <div class="canvas" id="canvas"></div>
+        <div class="canvas" id="canvas">
+            <!-- Canvas_Quick-Builder -->
+            <div id="quick-builder">
+                <h5>Quick Builder</h5>
+                <a id="quick-new-state">New State</a>
+                <a id="quick-new-accept-state">New Accept State</a>
+                <a id="quick-new-transition">New Transition</a>
+            </div>
+        </div>
     </view>
 </body>
 
-<!-- Page Logic -->
-<script src="./js/index.js"></script>
+<!-- Order Matters -->
+
+<!-- Page Scripts -->
+<script src="./js/scripts/start.js"></script>
+<script src="./js/scripts/main.js"></script>
+<script src="./js/scripts/canvas.js"></script>
+
+<!-- Structures -->
+<script src="./js/structures//StateGraphic.js"></script>
+<script src="./js/structures/FSM.js"></script>
+<script src="./js/structures/DFA.js"></script>
+<script src="./js/structures/NFA.js"></script>
+<script src="./js/structures/E-NFA.js"></script>
+
+<!-- Late Page Scripts -->
+<script src="./js/scripts/tools.js"></script>
+<script src="./js/scripts/qbuilder.js"></script>
 
 </html>
