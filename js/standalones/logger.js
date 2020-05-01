@@ -20,11 +20,11 @@ const Logger = (function () {
             
             // Log
             this.print(logStr);
-            this.history += logStr;
+            localStorage[Logger.key] += logStr;
         }
 
         this.clear = function () {
-            this.history = "";
+            localStorage[Logger.key] = "";
         }
     }
 

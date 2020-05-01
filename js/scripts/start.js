@@ -4,7 +4,6 @@
  * The start view is the first view to be seen.
  * All the logic related to the core elements of the start view is written here.
  */
-
  
 var logger = Logger.getInstance();
 var mainElement = document.getElementById("main");
@@ -13,7 +12,6 @@ var settingsElement = document.getElementById("settings");
 var githubLinkElement = document.getElementById("link-github");
 var documentationLinkElement = document.getElementById("link-documentation");
 var settingsOpenElement = document.getElementById("open-settings");
-var settingsCloseElement = document.getElementById("close-settings");
 var startToggleElement = document.getElementById("start-toggle");
 
 /**
@@ -29,11 +27,7 @@ githubLinkElement.onclick = () => {
 }
 
 settingsOpenElement.onclick = () => {
-    settings.style.display = "block";
-}
-
-settingsCloseElement.onclick = () => {
-    settings.style.display = "none";
+    settingsElement.style.display = "block";
 }
 
 startToggleElement.onclick = () => {
@@ -46,9 +40,11 @@ startToggleElement.onclick = () => {
 
     if (startElement.style.display === "none") {
         mainElement.style.display = "block";
-        toolsOpenElement.classList.add("attention");
+        // Start renderer
+        window.renderer.start();
     } else {
         mainElement.style.display = "none";
-        toolsOpenElement.classList.remove("attention");
+        // Destroy renderer
+        window.renderer.destroy();
     }
 }

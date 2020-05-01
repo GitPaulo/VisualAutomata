@@ -1,0 +1,17 @@
+/* The Close Button */
+.close {
+    position: absolute;
+    color: rgb(114, 114, 114);
+    font-size: 2.3vw;
+    font-weight: bold;
+    font-family: "StartFont";
+    top: 1%;
+    left: 94%;
+}
+
+.close:hover,
+.close:focus {
+    color: rgb(150, 33, 33);
+    text-decoration: none;
+    cursor: pointer;
+}

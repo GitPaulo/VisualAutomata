@@ -1,135 +1,170 @@
 class FSM {
     constructor (
-        startStateLiteral = ['A', false],
-        alphabet = ['1', '0']
+        alphabet,
+        type = FSM.TYPES.DFA
     ) {
-        // Checks
-        if (!startStateLiteral) {
-            throw Error('Missing a starting state.');
+        if (!alphabet) {
+            throw new Error('Invalid alphabet.');
         }
 
-        if (!alphabet || alphabet.length <= 0) {
-            throw Error('Missing or empty alphabet.');
+        if (!FSM.TYPES[type]) {
+            throw new Error('Invalid FSM type.');
         }
 
-        // Properties
-        this.states = new Set();
-        this.alphabet = new Set([...alphabet]);
-        this.transitions = new Map();
-        this.lookup = new Map();
-        this.currentStates = [];
+        // invariants
+        this.alphabet = new Set(alphabet);
+        this.type = type;
 
-        // Start State
-        this.startState = this.insert(
-            startStateLiteral.id || startStateLiteral[0],
-            startStateLiteral.accepting || startStateLiteral[1]
-        );
-
-        // Define it
-        this.currentStates = [this.startState];
+        // initialise variants
+        this._init();
     }
     
+    get onDeadState () {
+        return this.currentStates.length <= 0;
+    }
+
+    _init () {
+        this.currentStates = [];
+        this.states = new Map();
+        this.transitions = {};
+    
+        // New state
+        let startState = this.addState('A', false);
+        
+        // Start state
+        this.currentStates.push(startState); 
+    }
+    
+    _resolve (state) {
+        if (typeof state !== "object") {
+            return this.states.get(state);
+        }
+
+        return state;
+    }
+
+    _unbuild (state) {
+        state = this._resolve(state);
+
+        delete this.transitions[state.id];
+    }
+
     _build (state) {
-        let stateTransitions = new Map();
+        state = this._resolve(state);
+
+        this.transitions[state.id] = {};
 
         for (let symbol of this.alphabet) {
-            stateTransitions.set(symbol, new Set());
+            this.transitions[state.id][symbol] = [];
         }
 
-        this.transitions.set(state.id, stateTransitions);
-        this.lookup.set(state.id, state);
-    }
-
-    clear () {
-        for (let state of this.states) {
-            this._build(state);
+        // Add empty string slot
+        // note, empty string NOT in alphabet
+        if (this.type === FSM.TYPES.E_NFA) {
+            this.transition[state.id][FSM.EMPTY_STRING] = [];
         }
     }
 
-    insert (id, accepting) {
-        const newState = new FSM.State(
-            id,
-            accepting,
-            this
-        );
+    reset () {
+        this._init();
+    }
 
-        this.states.add(newState);
+    addState (id, accepting) {
+        const newState = {id, accepting};
+        
+        // Register state
+        this.states.set(id, newState);
+        
+        // Build transition slot
         this._build(newState);
 
         return newState;
     }
     
-    remove (id) {
-        // Remove state and all its transitions
+    removeState (state) {
+        state = this._resolve(state);
+
+        // Unregister state
+        this.states.remove(state.id);
+
+        // Unbuilt transition slot
+        this._unbuild(state)
     }
 
-    createDeadState (sourceState) {
-        let deadState = new FSM.State(
-            id,
-            accepting,
-            this
-        );
+    addTransition (source, target, symbol) {
+        source = this._resolve(source);
 
-        // Make dead
-        deadState.makeDeadState(sourceState);
+        if (!source) {
+            throw new Error('Invalid source state.');
+        }
 
-        // Add
-        this.states.add(deadState);
+        target = this._resolve(target);
 
-        // Build
-        this._build(deadState);       
+        if (!target) {
+            throw new Error('Invalid target state.');
+        }
+
+        symbol = String(symbol);
+
+        if (!this.alphabet.has(symbol)) {
+            throw new Error('Symbol ∉ alphabet.');
+        }
+
+        let tarr = this.transitions[source.id][symbol];
+
+        // DFA Check
+        if (this.type === FSM.TYPES.DFA
+            && tarr.length >= 1) {
+            throw new Error('DFA must be deterministic.');
+        }
+
+        // Add target state to transition set
+        tarr.push(target);
     }
 
-    addTransition (sourceId, targetId, symbol) {
-        const sourceState = this.lookup.get(sourceId);
-
-        if (!sourceState) {
-            return new Error('Invalid source state.');
+    addEmptyTransition (source, target) {
+        if (this.type !== FSM.TYPES.E_NFA) {
+            throw new Error('Machine must be E_NFA');
         }
 
-        const targetState = this.lookup.get(targetId);
+        source = this._resolve(source);
 
-        if (!targetState) {
-            return new Error('Invalid target state.');
+        if (!source) {
+            throw new Error('Invalid source state.');
         }
 
-        const transitionSymbol = symbol;
+        target = this._resolve(target);
 
-        if (!this.alphabet.has(transitionSymbol)) {
-            return new Error('Transition symbol not belonging to machine\'s alphabet.');
+        if (!target) {
+            throw new Error('Invalid target state.');
         }
 
-        // Add tranistion to table
-        this.transitions
-            .get(sourceState.id)
-            .get(transitionSymbol)
-            .add(targetState);
+        // Add target state to transition set
+        this.transitions[source.id][FSM.EMPTY_STRING].push(target);
     }
+    
+    removeTransition (source, target, symbol) {
+        source = this._resolve(source);
 
-    deleteTransition (sourceId, targetId, symbol) {
-        const sourceState = this.lookup.get(sourceId);
-
-        if (!sourceState) {
-            return new Error('Invalid source state.');
+        if (!source) {
+            throw new Error('Invalid source state.');
         }
 
-        const targetState = this.lookup.get(targetId);
+        target = this._resolve(target);
 
-        if (!targetState) {
-            return new Error('Invalid target state.');
+        if (!target) {
+            throw new Error('Invalid target state.');
         }
 
-        const transitionSymbol = symbol;
+        symbol = String(symbol);
 
-        if (!this.alphabet.has(transitionSymbol)) {
-            return new Error('Transition symbol not belonging to machine\'s alphabet.');
+        if (!this.alphabet.has(symbol)) {
+            throw new Error('Symbol ∉ alphabet.');
         }
 
-        // Add tranistion to table
-        this.transitions
-            .get(sourceState.id)
-            .get(transitionSymbol)
-            .delete(targetState);
+        // Remove target state form array of states
+        delete this.transitions[source.id][symbol]
+            [this.transitions[source.id][symbol].indexOf(target)];
     }
     
     verify () {
@@ -142,27 +177,57 @@ class FSM {
         return false;
     }
 
-    accept (string) {
-        this.input(string);
+    move (symbol) {
+        symbol = String(symbol);
 
-        return this.verify();
+        if (!this.alphabet.has(symbol)) {
+            throw new Error('Symbol ∉ alphabet.');
+        }
+
+        let nextCurrentStates = [];
+
+        for (let state of this.currentStates) {
+            let nextStates = this.transitions[state.id][symbol];
+
+            // Epsi closure
+            if (this.type === FSM.TYPES.E_NFA) {
+                nextStates = [
+                    ...nextStates,
+                    ...this.transitions[state.id][FSM.EMPTY_STRING]
+                ];
+            }
+
+            // Merge 'sets'
+            nextCurrentStates = [
+                ...nextCurrentStates, 
+                ...nextStates
+            ];
+        }
+
+        this.currentStates = nextCurrentStates;
     }
 
-    input (string) {
-        throw Error('Not implemented yet.');
+    toString () {
+        return `====== Machine [${this.type}] ======\n`
+                + `Alphabet (${this.alphabet.size}): { ${Array.from(this.alphabet).join(', ')} }\n`
+                + `States (${this.states.size}): { ${Array.from(this.states).join(', ')} }\n`
+                + `Current States (${this.currentStates.length}): { ${this.currentStates.join(', ')}}\n`
+                + `Transition: |||`
+    }
+
+    toMarkup () {
+        return `====== Machine [${this.type}] ======\n<br>`
+                + `Alphabet (${this.alphabet.size}): { ${Array.from(this.alphabet).join(', ')} }\n<br>`
+                + `States (${this.states.size}): { ${Array.from(this.states).join(', ')} }\n<br>`
+                + `Current States (${this.currentStates.length}): { ${this.currentStates.join(', ')}}\n<br>`
+                + `Transition: |||>`
     }
 }
 
-FSM.State = class {
-    constructor (id, accepting, machine) {
-        this.id = id;
-        this.accepting = accepting;
-        //this.machine = machine;
-        this.isDead = false;
-    }
+FSM.EMPTY_STRING = "ε";
 
-    makeDeadState (state) {
-        this.sourceState = state;
-        this.isDead = true;
-    }
+FSM.TYPES = {
+    DFA: 'DFA',
+    NFA: 'NFA',
+    E_NFA: 'E_NFA'
 }

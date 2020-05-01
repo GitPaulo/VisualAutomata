@@ -5,9 +5,6 @@
  * All the logic related to the tools menu is written here.
  */
 
-// Reference to active machine
-window.machine = null;
-
 // Logger
 var logger = Logger.getInstance();
 var storage = Storage.getInstance();
@@ -17,14 +14,14 @@ var toolsElement = document.getElementById("tools");
 var toolsCloseElement = document.getElementById("close-tools");
 var toolsOpenElement = document.getElementById("open-tools");
 
-// Builder
-var designerElement = document.getElementById("designer");
-var loadLoaderElement = document.getElementById("load-loader");
-var resetLoaderElement = document.getElementById("reset-loader");
-var deployDesignerElement = document.getElementById("deploy-designer");
+// Loader
+var loaderElement = document.getElementById("loader");
 var automatonSelectorElement = document.getElementById("automaton-selector");
+var automatonAlphabetElement = document.getElementById("automaton-alphabet");
+var loadLoaderElement = document.getElementById("load-loader");
 
 // Acceptor
+var acceptorElement = document.getElementById("acceptor");
 var machineDataElement = document.getElementById("machine-data");
 var acceptorStringElement = document.getElementById("acceptor-string");
 var runAcceptorElement = document.getElementById("run-acceptor");
@@ -44,21 +41,33 @@ var deleteStorageElement = document.getElementById("delete-storage");
  * Tools
  */
 
-toolsOpenElement.onclick = () => {
-    // Update all tabs
+const toolsUpdate = (selector="all") => {
+    switch (selector) {
+        case "loader":
+        case "all":
 
-    // Builder
+        case "acceptor":
+        case "all":
+            machineDataElement.innerHTML = renderer.machine 
+                && renderer.machine.toMarkup() || "[NO LOADED MACHINE]";
+        case "logger":
+        case "all":
+            logAreaElement.value = logger.history;
+        case "storage":
+        case "all":
+            toolsElement.style.display = "block";
+            toolsOpenElement.classList.remove("attention");
+        break;
+        default: 
+            throw new Error("Invalid tools update selector");
+    }
+}
 
-    // Acceptor
-    
-    // Logger
-    logAreaElement.value = logger.history;
-
-    // Storage
-
-    // Make visible
+toolsOpenElement.onclick = function () {
     toolsElement.style.display = "block";
-    toolsOpenElement.classList.remove("attention");
+
+    /* Update all tabs */
+    toolsUpdate();
 }
 
 toolsCloseElement.onclick = function () {
@@ -66,32 +75,29 @@ toolsCloseElement.onclick = function () {
 }
 
 /** 
- * Builder
+ * Loader
  */
 
 loadLoaderElement.onclick = function () {
     let automatonType = automatonSelectorElement.value;
+    let alphabetArr = automatonAlphabetElement.value.trim().split(',');
 
-    switch (automatonType) {
-        case "DFA":
-            window.machine = new DFA();
-            break;
-        case "NFA":
-            window.machine = new NFA();
-            break;
-        default:
-            return alert("Not available!");
+    // Load machine
+    renderer.machine = new FSM(
+        alphabetArr,
+        FSM.TYPES[automatonType]
+    );
+
+    // Designer and Acceptor now usable
+    if (acceptorElement.classList.contains('disabled')) {
+        acceptorElement.classList.remove("disabled");    
+        alert("Acceptor unlocked!");
     }
 
-    designerElement.classList.remove("disabled") // Active machine
-    logger.log(`Automaton type ${automatonType} structure loaded.`);
-}
-
-resetLoaderElement.onclick = function () {
-    designerElement.classList.add("disabled") // Active machine
-    window.machine = null;
-
-    logger.log("Reset active machine and builder state.");
+    // Update acceptor view
+    toolsUpdate("acceptor");
+    
+    logger.log(`Automaton type (${automatonType}) structure loaded.`);
 }
 
 /** 
@@ -100,14 +106,8 @@ resetLoaderElement.onclick = function () {
 
 runAcceptorElement.onclick = async function () {
     toolsCloseElement.onclick();
-}
 
-/** 
- * Designer
- */
-
-deployDesignerElement.onclick = function () {
-    window.machine.render(canvas);
+    logger.log(`Acceptor started execution.`);
 }
 
 /** 
@@ -136,7 +136,7 @@ loadStorageElement.onclick = function () {
 }
 
 saveStorageElement.onclick = function () {
-    if (!window.machine) {
+    if (!renderer.machine) {
         return alert("There must be an active machine to save.");
     }
 

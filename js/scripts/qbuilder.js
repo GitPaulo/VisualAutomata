@@ -1,36 +1,34 @@
 var logger = Logger.getInstance();
 var canvasElement = document.getElementById("canvas");
-var clickMenuElement = document.getElementById("quick-builder");
-var clickMenuNSElement = document.getElementById("quick-new-state");
-var clickMenuNASElement = document.getElementById("quick-new-accept-state");
-var clickMenuNTElement = document.getElementById("quick-new-transition");;
+var quickBuilderElement = document.getElementById("quick-builder");
+var quickBuilderNSElement = document.getElementById("quick-new-state");
+var quickBuilderNTElement = document.getElementById("quick-new-transition");
+var quickBuilderRSElement = document.getElementById("quick-remove-state");
+var quickBuilderRTElement = document.getElementById("quick-remove-transition");
 
 canvasElement.onclick = function (event) {
     if (event.ctrlKey) {
-        if (!window.machine) {        
-            clickMenuElement.style.display = "none";
-            
-            return alert(
-                "A machine must be loaded before accessing the Quick Builder menu."
-            );
+        if (!renderer.machine) {
+            return alert("A machine must be loaded first!");
         }
-
-        clickMenuElement.style.display = "block";
-        clickMenuElement.style.top = event.y;
-        clickMenuElement.style.left = event.x;
+        quickBuilderElement.style.display = "block";
+        quickBuilderElement.style.top = event.y;
+        quickBuilderElement.style.left = event.x;
     } else {
-        clickMenuElement.style.display = "none";
+        quickBuilderElement.style.display = "none";
     }
 }
 
-clickMenuNSElement.onclick = function () {
-    
+quickBuilderNSElement.onclick = function () {
+    renderer.newState();
 }
 
-clickMenuNSElement.onclick = function () {
-
+quickBuilderNTElement.onclick = function () {
+    renderer.newTransition();
 }
 
-clickMenuNTElement.onclick = function () {
+quickBuilderRSElement.onclick = function () {
+}
 
+quickBuilderRTElement.onclick = function () {
 }

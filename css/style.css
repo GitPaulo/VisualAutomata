@@ -12,6 +12,7 @@
 
 @import "./classes/tabs.css";
 @import "./classes/blur.css";
+@import "./classes/close.css";
 @import "./classes/slide.css";
 @import "./classes/popout.css";
 @import "./classes/disabled.css";
@@ -89,7 +90,7 @@ view {
 #banner > h1 {
     font-family: 'TitleFont', sans-serif;
     font-size: 6vw;
-    text-shadow: 5px 5px 80px rgb(75, 74, 74), 1px 5px 100px rgb(5, 5, 5);
+    text-shadow: 5px 5px 80px #4b4a4a, 1px 5px 100px rgb(5, 5, 5);
     color: white;
     margin-bottom: 0%;
 }
@@ -117,12 +118,17 @@ view {
 
 #settings {
     display: none;
-    position: absolute;
-    left: 25%;
-    top: 15%;
-    width: 50%;
-    height: 70%;
+    overflow: auto;
+    left: 27%;
+    top: 10%;
+    width: 45%;
+    height: 80%;
     background-color: white;
+    padding: 3%;
+}
+
+#save-settings {
+    width: 100%;
 }
 
 /**
@@ -150,22 +156,8 @@ view {
 
 /* Tablings for the "Tools" menu */
 
-#builder {
-    padding-right: 1vw;
-}
-
-#loader {
-    float: left;
-    width: 100%;
-    height: 20%;
-}
-
-#loader > #automaton-selector {
-    width: 70%;
-}
-
 #loader > button {
-    width: 14.35%;
+    width: 100%;
 }
 
 #logger > #log-area {
@@ -206,11 +198,6 @@ view {
     border-color: #2d0233;
 }
 
-#acceptor > textarea {
-    width: 100%;
-    height: 35%;
-}
-
 #acceptor > .control > button {
     width: 100%;
     border-radius: 0%;
@@ -247,7 +234,6 @@ view {
     border: 1px solid grey;
     box-shadow: 1px 1px 10px grey;
     width: 150px;
-    height: 120px;
 }
 
 #quick-builder > h5 {
