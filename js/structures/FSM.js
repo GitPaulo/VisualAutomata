@@ -61,7 +61,7 @@ class FSM {
         // Add empty string slot
         // note, empty string NOT in alphabet
         if (this.type === FSM.TYPES.E_NFA) {
-            this.transition[state.id][FSM.EMPTY_STRING] = [];
+            this.transitions[state.id][FSM.EMPTY_STRING] = [];
         }
     }
 
@@ -70,7 +70,11 @@ class FSM {
     }
 
     addState (id, accepting) {
-        const newState = {id, accepting};
+        if (this.states.has(id)) {
+            throw new Error('State already exists.');
+        }
+
+        let newState = {id, accepting};
         
         // Register state
         this.states.set(id, newState);
@@ -83,6 +87,10 @@ class FSM {
     
     removeState (state) {
         state = this._resolve(state);
+
+        if (!state) {
+            throw new Error('State does not exist.');
+        }
 
         // Unregister state
         this.states.remove(state.id);
@@ -209,18 +217,18 @@ class FSM {
 
     toString () {
         return `====== Machine [${this.type}] ======\n`
-                + `Alphabet (${this.alphabet.size}): { ${Array.from(this.alphabet).join(', ')} }\n`
-                + `States (${this.states.size}): { ${Array.from(this.states).join(', ')} }\n`
-                + `Current States (${this.currentStates.length}): { ${this.currentStates.join(', ')}}\n`
-                + `Transition: |||`
+                + `Alphabet (${this.alphabet.size}): ${JSON.stringify(this.alphabet.values())}\n`
+                + `States (${this.states.size}): ${JSON.stringify(this.states.values())}\n`
+                + `Current States (${this.currentStates.length}): ${JSON.stringify(this.currentStates)}\n`
+                + `Transitions: ${JSON.stringify(this.transitions)}`
     }
 
     toMarkup () {
         return `====== Machine [${this.type}] ======\n<br>`
-                + `Alphabet (${this.alphabet.size}): { ${Array.from(this.alphabet).join(', ')} }\n<br>`
-                + `States (${this.states.size}): { ${Array.from(this.states).join(', ')} }\n<br>`
-                + `Current States (${this.currentStates.length}): { ${this.currentStates.join(', ')}}\n<br>`
-                + `Transition: |||>`
+                + `Alphabet (${this.alphabet.size}): ${JSON.stringify(Array.from(this.alphabet.values()))}\n<br>`
+                + `States (${this.states.size}): ${JSON.stringify(Array.from(this.states.values()))}\n<br>`
+                + `Current States (${this.currentStates.length}): ${JSON.stringify(this.currentStates)}\n<br>`
+                + `Transitions: ${JSON.stringify(this.transitions)}`
     }
 }
 

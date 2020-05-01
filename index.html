@@ -45,7 +45,7 @@
             </select> 
             &ensp;Antialias: <input type="checkbox" id="use-antialias" name="vehicle1" value="Bike" checked> <br/>
             <h4>Canvas</h4>
-            Text: <input id="text-color" class="jscolor" value="FFFFFF"><br/>
+            Text: <input id="text-color" class="jscolor" value="00000"><br/>
             Background: <input id="background-color" class="jscolor" value="292929"><br/>
             State Color (Inner): <input id="state-inner-color" class="jscolor" value="E5E5E5"><br/>
             State Color (Outer): <input id="state-outer-color" class="jscolor" value="535453"><br/>
@@ -110,12 +110,12 @@
                     <select id="automaton-selector">
                         <option value="DFA">DFA</option>
                         <option value="NFA">NFA</option>
-                        <option value="e-NFA">e-NFA</option>
+                        <option value="E_NFA">E_NFA</option>
                         <option value="PDA">PDA</option>
                     </select>
                     <h5>Alphabet</h5>
                     <h7>Note: Separate substrings by comma.</h7>
-                    <input type="text" placeholder="" id="automaton-alphabet">
+                    <input type="text" placeholder="1,0" id="automaton-alphabet">
                     <div>
                         <input type="checkbox" id="automaton-use-regex">
                         <label class="label-inline" for="confirmField">Use RegEx?</label>
@@ -175,6 +175,7 @@
                 <h5>Quick Builder</h5>
                 <a id="quick-new-state">New State</a>
                 <a id="quick-new-transition">New Transition</a>
+                <a id="quick-new-e-transition" style="display: none;">New E-Transition</a>
                 <a id="quick-remove-state">Delete State</a>
                 <a id="quick-remove-transition">Delete Transition</a>
             </div>

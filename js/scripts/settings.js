@@ -23,11 +23,11 @@ window.SETTINGS = (genSettings = () => ({
         antialias: antialiasUsageElement.checked,
     },
     canvas: {
-        textColor: textColorElement.value,
-        backgroundColor: backgroundColorElement.value,
-        stateInnerColor: stateInnerColorElement.value,
-        stateOuterColor: stateOuterColorElement.value,
-        stateAcceptColor: stateAcceptColorElement.value
+        textColor: "0x" + textColorElement.value,
+        backgroundColor: "0x" + backgroundColorElement.value,
+        stateInnerColor: "0x" + stateInnerColorElement.value,
+        stateOuterColor: "0x" + stateOuterColorElement.value,
+        stateAcceptColor: "0x" + stateAcceptColorElement.value
     },
     animation: {
         speed: animationSpeedElement.value

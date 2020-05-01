@@ -206,6 +206,11 @@ view {
     border-color: #2d0233;
 }
 
+#acceptor  textarea {
+    height: 38%;
+    width: 100%;
+}
+
 /* Draggable Open Tools Button */
 
 #open-tools-draggable {

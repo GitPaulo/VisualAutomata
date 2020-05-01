@@ -1,19 +1,18 @@
 class StateGraphic extends Graphic {
-    constructor (state, ...args) {
+    constructor (
+        id,
+        accepting, 
+        pos = {
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2
+        }, 
+        ...args
+    ) {
         super(...args);
 
         // Properties
-        this.state = state;
-
-        // enable the bunny to be interactive... 
-        // this will allow it to respond to mouse and touch events
-        this.interactive = true;
-
-        // this button mode will mean the hand cursor appears when you roll over the bunny with your mouse
-        this.buttonMode = true;
-
-        // if dragging
-        this.dragging = false;
+        this.id = id;
+        this.accepting = accepting;
 
         // Events
         this.on('pointerdown', this._onDragStart);
@@ -22,8 +21,8 @@ class StateGraphic extends Graphic {
         this.on('pointermove', this._onDragMove);
 
         // Start pos
-        this.x = window.innerWidth / 4;
-        this.y = window.innerHeight / 4;
+        this.x = pos.x;
+        this.y = pos.y;
         
         // Draw base
         super.reset();
@@ -37,10 +36,7 @@ class StateGraphic extends Graphic {
             
         //store this variable for convenience           
         let position = this.data.getLocalPosition(this);
-
-        // Set the pivot point to the new position
-        this.pivot.set(position.x, position.y)
-
+        
         this.alpha = 0.7;
         this.dragging = true;
     }
@@ -50,8 +46,6 @@ class StateGraphic extends Graphic {
         this.dragging = false;
         // set the interaction data to null
         this.data = null;
-        
-        // this.update({});
     }
 
     _onDragMove() {
@@ -61,15 +55,17 @@ class StateGraphic extends Graphic {
             // Update position
             this.x = newPosition.x;
             this.y = newPosition.y;
+
+            this.update({});
         }
     }
 
     update (
         {
-            borderColor = 0x535453,
-            acceptColor = 0xa1ffac,
-            baseColor = 0xe5e5e5,
-            textColor = 0x000000,
+            borderColor = SETTINGS.canvas.stateOuterColor || 0x535453,
+            acceptColor = SETTINGS.canvas.stateAcceptColor || 0xa1ffac,
+            baseColor = SETTINGS.canvas.stateInnerColor || 0xe5e5e5,
+            textColor = SETTINGS.canvas.textColor || 0x000000,
             fontSize = 37,
             borderWidth = 5,
             innerSize = 55,
@@ -79,9 +75,12 @@ class StateGraphic extends Graphic {
         // Clear previous pixels
         super.destroy();
 
+        // update attached
+        super.updateAttached();
+
         // ID
         let idText = new PIXI.Text(
-            this.state.id,
+            this.id,
             {
                 fontSize, 
                 fontFamily: 'BoldFont', 
@@ -90,31 +89,31 @@ class StateGraphic extends Graphic {
             }
         );
 
-        // Center text manually
-        idText.x = this.x - idText.width/2;
-        idText.y = this.y - idText.height/2;
-
         // Add text to graphic as a child
         this.addChild(idText)
+
+        // Center text manually
+        idText.x = 0 - fontSize/3;
+        idText.y = 0 - fontSize/1.9;
 
         // Border
         this.lineStyle(0);
         this.beginFill(borderColor, 1);
-        this.drawCircle(this.x, this.y, outerSize + borderWidth);
+        this.drawCircle(0, 0, outerSize + borderWidth);
         this.endFill(); 
 
         // Accepting 
-        if (this.state.accepting) {
+        if (this.accepting) {
             this.lineStyle(0);
             this.beginFill(acceptColor, 1);
-            this.drawCircle(this.x, this.y, outerSize);
+            this.drawCircle(0, 0, outerSize);
             this.endFill(); 
         }
 
         // Base
         this.lineStyle(0);
         this.beginFill(baseColor, 1);
-        this.drawCircle(this.x, this.y, innerSize);
+        this.drawCircle(0, 0, innerSize);
         this.endFill();
     }
 

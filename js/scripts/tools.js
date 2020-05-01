@@ -48,8 +48,8 @@ const toolsUpdate = (selector="all") => {
 
         case "acceptor":
         case "all":
-            machineDataElement.innerHTML = renderer.machine 
-                && renderer.machine.toMarkup() || "[NO LOADED MACHINE]";
+            machineDataElement.innerHTML = renderer.graph.machine 
+                && renderer.graph.machine.toMarkup() || "[NO LOADED MACHINE]";
         case "logger":
         case "all":
             logAreaElement.value = logger.history;
@@ -83,10 +83,14 @@ loadLoaderElement.onclick = function () {
     let alphabetArr = automatonAlphabetElement.value.trim().split(',');
 
     // Load machine
-    renderer.machine = new FSM(
-        alphabetArr,
-        FSM.TYPES[automatonType]
-    );
+    renderer.graph.load(alphabetArr, automatonType);
+
+    // Enable extra tools
+    if (automatonType === FSM.TYPES.E_NFA) {
+        document.getElementById("quick-new-e-transition").style.display = "block";
+    } else {
+        document.getElementById("quick-new-e-transition").style.display = "none";
+    }
 
     // Designer and Acceptor now usable
     if (acceptorElement.classList.contains('disabled')) {
@@ -96,7 +100,10 @@ loadLoaderElement.onclick = function () {
 
     // Update acceptor view
     toolsUpdate("acceptor");
+
+    toolsElement.style.display = "none";
     
+    // Log
     logger.log(`Automaton type (${automatonType}) structure loaded.`);
 }
 
@@ -104,8 +111,15 @@ loadLoaderElement.onclick = function () {
  * Acceptor
  */
 
-runAcceptorElement.onclick = async function () {
+runAcceptorElement.onclick = function () {
     toolsCloseElement.onclick();
+
+    let string = acceptorStringElement.value;
+
+    // Run
+    renderer.graph.animate(string).then(() => logger.log('Acceptor execution completed.'));
+
+    toolsElement.style.display = "none";
 
     logger.log(`Acceptor started execution.`);
 }
