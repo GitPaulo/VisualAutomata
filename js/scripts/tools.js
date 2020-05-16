@@ -48,8 +48,8 @@ const toolsUpdate = (selector="all") => {
             // 
         case "acceptor":
         case "all":
-            machineDataElement.innerHTML = renderer.graph.machine 
-                && renderer.graph.machine.toMarkup() || "[NO LOADED MACHINE]";
+            machineDataElement.innerHTML = controller.machine 
+                && controller.machine.toMarkup() || "[NO LOADED MACHINE]";
         case "logger":
         case "all":
             logAreaElement.value = logger.history;
@@ -96,8 +96,14 @@ loadLoaderElement.onclick = function () {
         return alert("Invalid alphabet input!");
     }
 
+    // Currently we only have FSM
     // Load machine
-    renderer.graph.load(alphabetArr, automatonType);
+    controller.loadMachine(
+        new FSM(
+            alphabetArr,
+            FSM.TYPES.DFA[automatonType]
+        )
+    );
 
     // Designer and Acceptor now usable
     if (acceptorElement.classList.contains('disabled')) {
@@ -108,6 +114,7 @@ loadLoaderElement.onclick = function () {
     // Update acceptor view
     toolsUpdate("acceptor");
 
+    // Clear panel
     toolsElement.style.display = "none";
     
     // Log
@@ -121,14 +128,14 @@ loadLoaderElement.onclick = function () {
 runAcceptorElement.onclick = function () {
     toolsCloseElement.onclick();
 
+    // Input string
     let string = acceptorStringElement.value;
 
-    // Run
-    renderer.graph.animate(string).then(() => logger.log('Acceptor execution completed.'));
+    // Start animation
+    controller.animate(string);
 
+    // Close panel
     toolsElement.style.display = "none";
-
-    logger.log(`Acceptor started execution.`);
 }
 
 /** 
@@ -157,7 +164,7 @@ loadStorageElement.onclick = function () {
 }
 
 saveStorageElement.onclick = function () {
-    if (!renderer.machine) {
+    if (!controller.machine) {
         return alert("There must be an active machine to save.");
     }
 

@@ -1,8 +1,11 @@
-class FSM {
+class FSM extends VisualAutomaton {
     constructor (
         alphabet,
         type = FSM.TYPES.DFA
     ) {
+        // (Machine does nothing as of now)
+        super();
+
         if (!alphabet) {
             throw new Error('Invalid alphabet.');
         }
@@ -76,11 +79,17 @@ class FSM {
 
         let newState = {id, accepting};
         
-        // Register state
+        // set state
         this.states.set(id, newState);
         
         // Build transition slot
         this._build(newState);
+
+        // Register graphic
+        super.registerState(
+            newState.id, 
+            newState.accepting
+        );
 
         return newState;
     }
@@ -92,11 +101,16 @@ class FSM {
             throw new Error('State does not exist.');
         }
 
-        // Unregister state
+        // remove state
         this.states.remove(state.id);
 
         // Unbuilt transition slot
         this._unbuild(state)
+
+        // unregister graphic
+        super.unregisterState(
+            newState.id, 
+        );
     }
 
     addTransition (source, target, symbol) {
@@ -114,6 +128,10 @@ class FSM {
 
         symbol = String(symbol);
 
+        if (symbol === "") {
+            return this.addEmptyTransition(source, target);
+        }
+
         if (!this.alphabet.has(symbol)) {
             throw new Error('Symbol ∉ alphabet.');
         }
@@ -128,6 +146,13 @@ class FSM {
 
         // Add target state to transition set
         tarr.push(target);
+
+        // register graphics
+        super.registerTransition(
+            source.id,
+            target.id,
+            symbol
+        );
     }
 
     addEmptyTransition (source, target) {
@@ -149,6 +174,13 @@ class FSM {
 
         // Add target state to transition set
         this.transitions[source.id][FSM.EMPTY_STRING].push(target);
+
+        // register graphics
+        super.registerTransition(
+            source.id,
+            target.id,
+            FSM.EMPTY_STRING
+        );
     }
     
     removeTransition (source, target, symbol) {
@@ -173,6 +205,12 @@ class FSM {
         // Remove target state form array of states
         delete this.transitions[source.id][symbol]
             [this.transitions[source.id][symbol].indexOf(target)];
+
+        // unregister graphic
+        super.unregisterTransition(
+            source.id,
+            target.id,
+        );
     }
     
     verify () {
@@ -224,6 +262,59 @@ class FSM {
         }
 
         this.currentStates = nextCurrentStates;
+    }
+
+    async accept (string) {
+        let highlightCS = (color) => {
+            console.log("HIGH", this.currentStates)
+            for (let cstate of this.currentStates) {
+                let g = this.graphics.states.get(cstate.id);
+                console.log(g)
+                g.highlight(color);
+            }
+        }
+
+        let resetCS = () => {
+            for (let cstate of this.currentStates) {
+                let g = this.graphics.states.get(cstate.id);
+                g.reset();
+            }
+        }
+
+        // Go through input string
+        for (let i = 0; i < string.length; i++) {
+            let symbol = string.charAt(i);
+
+            // Log
+            logger.log('Machine reading symbol: ' + symbol);
+
+            // Highlight current states
+            highlightCS();
+            await sleep();
+            resetCS();
+
+            this.move(symbol);
+        }
+
+        let hcolor = null; 
+        if (this.verify()) {
+            hcolor = 0x00ff00;
+            alert("Accepted");
+        } else {
+            hcolor = 0xff3300;
+            alert("Rejected!");
+        }
+
+        highlightCS(hcolor);
+        await sleep();
+        resetCS();
+
+        let reset = confirm("Reset automaton?");
+
+        if (reset) {
+            this.reset();
+            alert("Reset machine!");
+        }
     }
 
     toString () {

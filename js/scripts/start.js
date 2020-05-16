@@ -40,11 +40,11 @@ startToggleElement.onclick = () => {
 
     if (startElement.style.display === "none") {
         mainElement.style.display = "block";
-        // Start renderer
-        window.renderer.start();
+        // Create new canvas
+        controller.new();
     } else {
         mainElement.style.display = "none";
-        // Destroy renderer
-        window.renderer.destroy();
+        // Destroy old canvas
+        controller.destroy();
     }
 }

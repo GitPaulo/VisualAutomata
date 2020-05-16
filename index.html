@@ -4,6 +4,7 @@
     <!-- Libs (JS) -->
     <script src="./js/libs/pixi.js"></script>
     <script src="./js/libs/jscolor.js"></script>
+    <script src="./js/libs/run_prettify.js"></script>
     <!-- "Modules" AKA "Standalones" (JS) -->
     <script src="./js/standalones/dragger.js"></script>
     <script src="./js/standalones/storage.js"></script>
@@ -159,18 +160,7 @@
                 <!-- Acceptor (tab) -->
                 <tab id="acceptor" class="disabled">
                     <div class="content">
-                        <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-                        <pre class="prettyprint" id="machine-data">
-                            Example Strings
-                            <br>
-                            ----------------
-                            <br>
-                            Example1: "423213"
-                            <br>
-                            Example2: "44324323213"
-                            <br>
-                            Example3: "44324323213"
-                        </pre>
+                        <pre class="prettyprint" id="machine-data">[NO MACHINE IS LOADED]</pre>
                         <textarea rows="4" id="acceptor-string" placeholder="<Input String Here>"></textarea>
                     </div>
                     <div class="control">
@@ -228,10 +218,12 @@
 <!-- Order Matters -->
 
 <!-- Structures -->
+<script src="./js/structures/VisualAutomaton.js"></script>
 <script src="./js/structures/FSM.js"></script>
 <script src="./js/structures/Graphic.js"></script>
 <script src="./js/structures/StateGraphic.js"></script>
 <script src="./js/structures/TransitionGraphic.js"></script>
+<script src="./js/structures/CanvasController.js"></script>
 
 <!-- Page Scripts -->
 <script src="./js/scripts/start.js"></script>

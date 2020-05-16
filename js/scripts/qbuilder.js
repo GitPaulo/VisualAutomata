@@ -10,7 +10,7 @@ var quickConvertElement = document.getElementById("quick-convert");
 
 canvasElement.onclick = function (event) {
     if (event.ctrlKey) {
-        if (!renderer.graph.machine) {
+        if (!controller.machine) {
             return alert("A machine must be loaded first!");
         }
 
@@ -20,7 +20,7 @@ canvasElement.onclick = function (event) {
         quickBuilderElement.style.left = event.x;
 
         // E-NFA extra option
-        if (renderer.graph.machine.type === FSM.TYPES.E_NFA) {
+        if (controller.machine.type === FSM.TYPES.E_NFA) {
             document.getElementById("quick-new-e-transition").style.display = "block";
         } else {
             document.getElementById("quick-new-e-transition").style.display = "none";
@@ -31,17 +31,19 @@ canvasElement.onclick = function (event) {
 }
 
 quickBuilderNSElement.onclick = function (event) {
-    let graphic = renderer.graph.newState();
-    graphic.x = event.clientX;
-    graphic.y = event.clientY;
+    // prompt new state
+    controller.newState({
+        x: event.clientX,
+        y: event.clientY
+    });
 }
 
 quickBuilderNTElement.onclick = function () {
-    renderer.graph.newTransition();
+    controller.newTransition();
 }
 
 quickBuilderNETElement.onclick = function () {
-    renderer.graph.newETransition();
+    controller.newETransition();
 }
 
 quickBuilderRSElement.onclick = function () {

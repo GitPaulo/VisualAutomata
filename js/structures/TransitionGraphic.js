@@ -2,7 +2,7 @@ class TransitionGraphic extends Graphic {
     constructor (
         sourceGraphic,
         targetGraphic,
-        transitionSymbol, 
+        transitionString, 
         ...args
     ) {
         super(...args);
@@ -10,7 +10,7 @@ class TransitionGraphic extends Graphic {
         // Properties
         this.sourceGraphic = sourceGraphic;
         this.targetGraphic = targetGraphic;
-        this.transitionSymbol = transitionSymbol;
+        this.transitionString = transitionString;
 
         // Attach
         sourceGraphic.attach(this);
@@ -130,7 +130,7 @@ class TransitionGraphic extends Graphic {
 
         // === Draw Text
         let idText = new PIXI.Text(
-            "'" + this.transitionSymbol + "'",
+            "'" + this.transitionString + "'",
             {
                 fontSize, 
                 fontFamily: 'Arial', 
