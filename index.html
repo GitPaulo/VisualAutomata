@@ -35,15 +35,17 @@
         </div>
         <!-- Settings -->
         <div id="settings" class="popout">
-            <span id="close-settings" class="close">&times;</span>
-            <h2><i class="fas fa-cogs"></i>&ensp;Settings</h2>
-            <hr>
+            <div id="top-settings">
+                <span id="close-settings" class="close">&times;</span>
+                <h2><i class="fas fa-cogs"></i>&ensp;Settings</h2>
+                <hr>
+            </div>
             <div id="panels-settings">
                 <!-- Application Settings -->
                 <section class="collapsible">
                     <input type="checkbox" name="collapse1" id="handle1">
                     <h2 class="handle">
-                    <label for="handle1">Application</label>
+                        <label for="handle1">Application</label>
                     </h2>
                     <div class="content">
                         <select id="render-context" name="Render Context">
@@ -57,7 +59,7 @@
                 <section class="collapsible">
                     <input type="checkbox" name="collapse2" id="handle2">
                     <h2 class="handle">
-                    <label for="handle2">Canvas</label>
+                        <label for="handle2">Canvas</label>
                     </h2>
                     <div class="content">
                         Text: <input id="text-color" class="jscolor" value="000000"><br />
@@ -71,7 +73,7 @@
                 <section class="collapsible">
                     <input type="checkbox" name="collapse3" id="handle3">
                     <h2 class="handle">
-                    <label for="handle3">Animation</label>
+                        <label for="handle3">Animation</label>
                     </h2>
                     <div class="content">
                         Slow <input type="range" min="1" max="100" value="50" class="slider" id="animation-speed"> Fast
@@ -131,48 +133,55 @@
                 <div class="indicator"></div>
             </div>
             <!-- Tabbings -->
-            <div class="content">
+            <div class="tabbings">
                 <!-- Loader (tab) -->
                 <tab id="loader">
-                    <h5>Automaton</h5>
-                    <select id="automaton-selector">
-                        <option value="DFA">DFA</option>
-                        <option value="NFA">NFA</option>
-                        <option value="E_NFA">E_NFA</option>
-                        <option value="PDA">PDA</option>
-                    </select>
-                    <h5>Alphabet</h5>
-                    <h7>Note: Separate substrings by comma.</h7>
-                    <input type="text" placeholder="1,0" id="automaton-alphabet">
-                    <div>
-                        <input type="checkbox" id="automaton-use-regex">
-                        <label class="label-inline" for="confirmField">Use RegEx?</label>
+                    <div class="content">
+                        <h5>Automaton</h5>
+                        <select id="automaton-selector">
+                            <option value="DFA">DFA</option>
+                            <option value="NFA">NFA</option>
+                            <option value="E_NFA">E_NFA</option>
+                            <option value="PDA">PDA</option>
+                        </select>
+                        <h5>Alphabet</h5>
+                        <h7>Note: Separate substrings by comma.</h7>
+                        <input type="text" placeholder="1,0" id="automaton-alphabet">
+                        <div>
+                            <input type="checkbox" id="automaton-use-regex">
+                            <label class="label-inline" for="confirmField">Use RegEx?</label>
+                        </div>
                     </div>
-                    <hr>
-                    <button id="load-loader">Load</button>
+                    <div class="control">
+                        <button id="load-loader">Load</button>
+                    </div>
                 </tab>
                 <!-- Acceptor (tab) -->
                 <tab id="acceptor" class="disabled">
-                    <code id="machine-data" style="overflow: auto;">
-                        Example Strings
-                        <br>
-                        ----------------
-                        <br>
-                        Example1: "423213"
-                        <br>
-                        Example2: "44324323213"
-                        <br>
-                        Example3: "44324323213"
-                    </code>
-                    <hr>
+                    <div class="content">
+                        <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+                        <pre class="prettyprint" id="machine-data">
+                            Example Strings
+                            <br>
+                            ----------------
+                            <br>
+                            Example1: "423213"
+                            <br>
+                            Example2: "44324323213"
+                            <br>
+                            Example3: "44324323213"
+                        </pre>
+                        <textarea rows="4" id="acceptor-string" placeholder="<Input String Here>"></textarea>
+                    </div>
                     <div class="control">
-                        <textarea rows="10" id="acceptor-string" placeholder="<Input String Here>"></textarea>
                         <button id="run-acceptor">Run</button>
                     </div>
                 </tab>
                 <!-- Logger (tab) -->
                 <tab id="logger">
-                    <textarea id="log-area"></textarea>
+                    <div class="content">
+                        <textarea id="log-area"></textarea>
+                    </div>
                     <div class="control">
                         <button id="clear-logger">Clear</button>
                         <button id="export-logger">Export</button>
@@ -180,19 +189,22 @@
                 </tab>
                 <!-- Storage (tab) -->
                 <tab id="storage">
-                    <table id="storage-table">
-                        <tr>
-                            <th>ID</th>
-                            <th>Type</th>
-                            <th>Size</th>
-                            <th>Date</th>
-                        </tr>
-                    </table>
+                    <div class="content">
+                        <table id="storage-table">
+                            <tr>
+                                <th>ID</th>
+                                <th>Type</th>
+                                <th>Size</th>
+                                <th>Date</th>
+                            </tr>
+                        </table>
+                    </div>
                     <div class="control">
                         <button id="load-storage">Load</button>
                         <button id="save-storage">Save</button>
                         <button id="delete-storage">Delete</button>
                     </div>
+                </tab>
             </div>
         </div>
         </div>

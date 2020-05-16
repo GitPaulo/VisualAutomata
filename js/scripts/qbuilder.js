@@ -13,9 +13,18 @@ canvasElement.onclick = function (event) {
         if (!renderer.graph.machine) {
             return alert("A machine must be loaded first!");
         }
+
+        // Make panel appear
         quickBuilderElement.style.display = "block";
         quickBuilderElement.style.top = event.y;
         quickBuilderElement.style.left = event.x;
+
+        // E-NFA extra option
+        if (renderer.graph.machine.type === FSM.TYPES.E_NFA) {
+            document.getElementById("quick-new-e-transition").style.display = "block";
+        } else {
+            document.getElementById("quick-new-e-transition").style.display = "none";
+        }
     } else {
         quickBuilderElement.style.display = "none";
     }

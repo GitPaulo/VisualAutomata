@@ -45,7 +45,7 @@ const toolsUpdate = (selector="all") => {
     switch (selector) {
         case "loader":
         case "all":
-
+            // 
         case "acceptor":
         case "all":
             machineDataElement.innerHTML = renderer.graph.machine 
@@ -78,19 +78,26 @@ toolsCloseElement.onclick = function () {
  * Loader
  */
 
+// Keep this here for now
+automatonSelectorElement.onchange = function () {
+    if (this.options[this.selectedIndex].value === 'PDA') {
+        alert("PDA not yet implemented!");
+    }
+
+    this.value = "DFA";
+}
+
 loadLoaderElement.onclick = function () {
     let automatonType = automatonSelectorElement.value;
     let alphabetArr = automatonAlphabetElement.value.trim().split(',');
 
+    // Check for empty foe;d
+    if (alphabetArr.length <= 0) {
+        return alert("Invalid alphabet input!");
+    }
+
     // Load machine
     renderer.graph.load(alphabetArr, automatonType);
-
-    // Enable extra tools
-    if (automatonType === FSM.TYPES.E_NFA) {
-        document.getElementById("quick-new-e-transition").style.display = "block";
-    } else {
-        document.getElementById("quick-new-e-transition").style.display = "none";
-    }
 
     // Designer and Acceptor now usable
     if (acceptorElement.classList.contains('disabled')) {

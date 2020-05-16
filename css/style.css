@@ -128,15 +128,28 @@ view {
     background-color: white;
 }
 
+#settings > h2 {
+    font-size: 1.6vw;
+}
+
+#settings > span {
+    font-size: 2vw;
+}
+
+#top-settings {
+    width: 100%;
+    height: 15%;
+}
+
 #panels-settings {
     overflow: auto;
     width: 100%;
-    height: 70%;
+    height: 72%;
 }
 
 #bottom-settings {
     width: 100%;
-    height: 20%;
+    height: 13%;
 }
 
 #save-settings {
@@ -157,22 +170,18 @@ view {
 
 #tools {
     display: none;
-    left: 25%;
-    width: 50%;
-    height: 55%;
+    left: 23.5%;
+    width: 52.5%;
+    height: 60%;
 }
 
-.control {
+/* Tabbings for the "Tools" menu */
 
-}
-
-/* Tablings for the "Tools" menu */
-
-#loader > button {
+#loader > .control > button {
     width: 100%;
 }
 
-#logger > #log-area {
+#logger > .content > #log-area {
     width: 100%;
     height: 81%;
     border-style: groove;
@@ -188,15 +197,15 @@ view {
     border-color: #2d0233;
 }
 
-#designer > button {
+#designer > .control > button {
     width: 100%;
 }
 
-#storage > table {
+#storage > .content > table {
     width: 100%;
 }
 
-#storage table th {
+#storage > .content > table th {
     text-align: center;
     font-size: 0.8vw;
 }
@@ -218,8 +227,8 @@ view {
     border-color: #2d0233;
 }
 
-#acceptor  textarea {
-    height: 38%;
+#acceptor > .content > textarea {
+    height: 20%;
     width: 100%;
 }
 
