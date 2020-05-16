@@ -19,6 +19,9 @@ class TransitionGraphic extends Graphic {
         // if dragging
         this.dragging = false;
 
+        // control point for dragging
+        this.controlPoint = null;
+
         // Events
         this.on('pointerdown', this._onDragStart);
         this.on('pointerup', this._onDragEnd);
@@ -45,51 +48,87 @@ class TransitionGraphic extends Graphic {
     _onDragEnd () {
         this.alpha = 1;
         this.dragging = false;
+        
         // set the interaction data to null
         this.data = null;
-        
-        // this.update({});
     }
 
     _onDragMove() {
         if (this.dragging) {
             const newPosition = this.data.getLocalPosition(this.parent);
-
-            this.test = this.test || {x:newPosition.x, y:newPosition.y}
             
-            // Update position
-            let cx = this.test.x + newPosition.x;
-            let cy = this.test.y + newPosition.y;
+            // Update control point
+            this.controlPoint = {
+                x: newPosition.x - this.x, 
+                y: newPosition.y - this.y 
+            };
 
-            this.update({
-               bendP1: [cx, cy],
-               bendP2: [cx, cy]
-            })
+            // Update
+            this.update({});
         }
     }
 
     update (
         {
             fontSize=45,
-            bendP1=[0,0],
-            bendP2=[0,0],
             textColor=0xdc8fff,
             baseColor=0xffffff,
             arrowColor=0xdc8fff
         }
-    ) { 
+    ) {         
         // Clear previous pixels
         super.destroy();
 
-        // Start pos
+        // Update (global) graphic position
         this.x = this.sourceGraphic.x;
         this.y = this.sourceGraphic.y;
 
-        // End pos (GLOBAL -> local)
-        let targetP = this.toLocal(this.targetGraphic.position);
-        targetP = [targetP.x, targetP.y]
+        // Start Point
+        let startPoint = {
+            x: 0,
+            y: 0,
+        };
 
-        // ID
+        // End Point (GLOBAL -> local)
+        let targetPoint = this.toLocal(this.targetGraphic.position);
+
+        // Mid Point
+        let midPoint = {
+            x: targetPoint.x / 2,
+            y: targetPoint.y / 2
+        };
+
+        // Distance
+        let distance = Math.sqrt(Math.pow((startPoint.x-targetPoint.x), 2) + Math.pow((startPoint.y-targetPoint.y), 2));
+        
+        // Control Point
+        let controlPoint = this.controlPoint;
+
+        if (!controlPoint) {
+            controlPoint = midPoint;
+        }
+
+        // Normal
+        let normal = {
+            x: -(targetPoint.y - controlPoint.y),
+            y: targetPoint.x - targetPoint.y,
+        };
+
+        let l = Math.sqrt(normal.x ** 2 + normal.y ** 2);
+        
+        normal.x /= l;
+        normal.y /= l;
+
+        // Tangent
+        let tangent = {
+          x: -normal.y * 10,
+          y: normal.x * 10
+        };
+    
+        normal.x *= 10;
+        normal.y *= 10;
+
+        // === Draw Text
         let idText = new PIXI.Text(
             "'" + this.transitionSymbol + "'",
             {
@@ -100,46 +139,20 @@ class TransitionGraphic extends Graphic {
             }
         );
 
+        // Set text graphic pos
+        idText.x = controlPoint.x - fontSize/2;
+        idText.y = controlPoint.y + fontSize/2;
+
         // Add text to graphic as a child
         this.addChild(idText)
 
-
-        // Midpoint
-        let midpoint = {
-            x: bendP1[0] || targetP[0] / 2,
-            y: bendP1[1] || targetP[1] / 2
-        }
-
-        // Change position with 
-        idText.x = midpoint.x - fontSize/2;
-        idText.y = midpoint.y + 15;
-
-        // Some maths
-        let normal = [
-            -(targetP[1] - bendP2[1]),
-            targetP[0] - bendP2[0],
-        ];
-
-        let l = Math.sqrt(normal[0] ** 2 + normal[1] ** 2);
-        
-        normal[0] /= l;
-        normal[1] /= l;
-    
-        let tangent = [
-            -normal[1] * 10,
-            normal[0] * 10
-        ]
-    
-        normal[0] *= 10;
-        normal[1] *= 10;
-        
-        // Draw
-        this.lineStyle(20, baseColor, 1)
-            .bezierCurveTo(bendP1[0], bendP1[1], bendP2[0], bendP2[1], targetP[0], targetP[1])
-            .lineStyle(4, arrowColor, 2, .5)
-            .moveTo(midpoint.x + normal[0] + tangent[0], midpoint.y + normal[1] + tangent[1])
-            .lineTo(midpoint.x, midpoint.y)
-            .lineTo(midpoint.x - normal[0] + tangent[0], midpoint.y - normal[1] + tangent[1])
+        // === Draw Graphic
+        this.lineStyle(20, baseColor, 1);
+        this.bezierCurveTo(controlPoint.x, controlPoint.y, controlPoint.x, controlPoint.y, targetPoint.x, targetPoint.y);
+        this.lineStyle(4, arrowColor, 2, .5);
+        this.moveTo(controlPoint.x + normal.x + tangent.x, controlPoint.y + normal.y + tangent.y);
+        this.lineTo(controlPoint.x, controlPoint.y);
+        this.lineTo(controlPoint.x - normal.x + tangent.x, controlPoint.y - normal.y + tangent.y);
     }
 
     highlight (color=0xf24949) {

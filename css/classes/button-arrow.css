@@ -15,9 +15,9 @@
     color: rgb(255, 255, 255);
     text-decoration: none;
     font-family: 'BoldFont', sans-serif;
-    font-size: 1vw;
+    font-size: .9vw;
     position: relative;
-    padding: 10px 30px 10px 20px;
+    padding: 1vh 1.5vw 1vh 1vw;
     -webkit-transition: all 0.3s;
     -o-transition: all 0.3s;
     transition: all 0.3s;
@@ -28,8 +28,8 @@
 
 .arrow-effect .bg {
     background: #dc82ff;
-    width: 20px;
-    height: 3px;
+    width: 1.1vw;
+    height: .3vh;
     position: absolute;
     right: 0;
     top: 50%;
@@ -41,7 +41,7 @@
 }
 
 .arrow-effect:hover {
-    padding-right: 20px;
+    padding-right: 1vw;
     color: rgb(0, 0, 0);
     font-weight: bold;
 }
@@ -57,25 +57,25 @@
 .arrow-effect .bg:before,
 .arrow-effect .bg:after {
     content: '';
-    height: 3px;
-    width: 10px;
+    height: .27vh;
+    width: .5vw;
     background:#dc82ff;
     position: absolute;
-    right: -2px;
+    right: -.07vw;
     -webkit-transition: all 0.3s;
     -o-transition: all 0.3s;
     transition: all 0.3s;
 }
 
 .arrow-effect .bg:before {
-    bottom: 3px;
+    bottom: .15vw;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
 
 .arrow-effect .bg:after {
-    top: 3px;
+    top: .27vh;
     -webkit-transform: rotate(-45deg);
     -ms-transform: rotate(-45deg);
     transform: rotate(-45deg);
@@ -87,9 +87,9 @@
 }
 
 .arrow-effect:hover .bg:before {
-    bottom: 6px;
+    bottom: 2vw;
 }
 
 .arrow-effect:hover .bg:after {
-    top: 6px;
+    top: 3vh;
 }

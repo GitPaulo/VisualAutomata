@@ -16,6 +16,7 @@
 @import "./classes/slide.css";
 @import "./classes/popout.css";
 @import "./classes/disabled.css";
+@import "./classes/collapsible.css";
 @import "./classes/button-arrow.css";
 @import "./classes/button-float.css";
 
@@ -48,13 +49,9 @@
  * Core CSS
  */
 
-html {
-    height: 100%;
-}
-
 body {
+    height: 100%;
     margin: 0;
-    min-height: 100%;
 }
 
 view {
@@ -66,6 +63,7 @@ view {
 /* The two main views */
 
 #start {
+    position: relative;
     display: block;
 }
 
@@ -83,13 +81,15 @@ view {
 #banner {
     text-align: center;
     position: absolute;
-    left: 28%;
-    top: 28%;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
 }
 
 #banner > h1 {
     font-family: 'TitleFont', sans-serif;
-    font-size: 6vw;
+    font-size: 6.25vw;
     text-shadow: 5px 5px 80px #4b4a4a, 1px 5px 100px rgb(5, 5, 5);
     color: white;
     margin-bottom: 0%;
@@ -104,8 +104,8 @@ view {
     color: white;
     text-align: center;
     font-size: 1.5vw;
-    padding-left: 1%;
-    padding-right: 1%;
+    padding-left: .5vw;
+    padding-right: .5vw;
 
 }
 
@@ -118,13 +118,25 @@ view {
 
 #settings {
     display: none;
-    overflow: auto;
-    left: 27%;
+    position: absolute;
+    left: 28%;
     top: 10%;
-    width: 45%;
+    width: 44%;
     height: 80%;
-    background-color: white;
     padding: 3%;
+    font-size: .8vw;
+    background-color: white;
+}
+
+#panels-settings {
+    overflow: auto;
+    width: 100%;
+    height: 70%;
+}
+
+#bottom-settings {
+    width: 100%;
+    height: 20%;
 }
 
 #save-settings {
@@ -215,18 +227,13 @@ view {
 
 #open-tools-draggable {
     position: absolute;
-    top: 1.6%;
-    left: 89%;
+    left: 87%;
 }
 
 #open-tools {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-#open-tools i {
-    font-size: 4.8vh;
 }
 
 /* Quick Builder */

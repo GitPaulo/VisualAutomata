@@ -66,7 +66,7 @@ class FSM {
     }
 
     reset () {
-        this._init();
+        this.currentStates = [this.states.get('A')];
     }
 
     addState (id, accepting) {
@@ -176,7 +176,18 @@ class FSM {
     }
     
     verify () {
-        for (let state of this.currentStates) {
+        let cstates = this.currentStates;
+
+        // Closure
+        if (this.type === FSM.TYPES.E_NFA) {
+            for (let state of cstates) {
+                cstates = [...cstates, ...this.transitions[state.id][FSM.EMPTY_STRING]];
+            }
+        }
+
+        console.log(cstates);
+
+        for (let state of cstates) {
             if (state.accepting) {
                 return true;
             }

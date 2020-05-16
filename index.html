@@ -38,22 +38,50 @@
             <span id="close-settings" class="close">&times;</span>
             <h2><i class="fas fa-cogs"></i>&ensp;Settings</h2>
             <hr>
-            <h4>Application</h4>
-            <select id="render-context" name="Render Context">
-                <option value="webgl">WebGL</option>
-                <option value="html5">HTML5 Canvas</option>
-            </select> 
-            &ensp;Antialias: <input type="checkbox" id="use-antialias" name="vehicle1" value="Bike" checked> <br/>
-            <h4>Canvas</h4>
-            Text: <input id="text-color" class="jscolor" value="00000"><br/>
-            Background: <input id="background-color" class="jscolor" value="292929"><br/>
-            State Color (Inner): <input id="state-inner-color" class="jscolor" value="E5E5E5"><br/>
-            State Color (Outer): <input id="state-outer-color" class="jscolor" value="535453"><br/>
-            State Color (Accept): <input id="state-accept-color" class="jscolor" value="A1FFAC"><br/>
-            <h4>Animation</h4>
-            Slow <input type="range" min="1" max="100" value="50" class="slider" id="animation-speed"> Fast
-            <hr>
-            <button id="save-settings">Save</button>
+            <div id="panels-settings">
+                <!-- Application Settings -->
+                <section class="collapsible">
+                    <input type="checkbox" name="collapse1" id="handle1">
+                    <h2 class="handle">
+                    <label for="handle1">Application</label>
+                    </h2>
+                    <div class="content">
+                        <select id="render-context" name="Render Context">
+                            <option value="webgl">WebGL</option>
+                            <option value="html5">HTML5 Canvas</option>
+                        </select>
+                        &ensp;Antialias: <input type="checkbox" id="use-antialias" value="true" checked> <br />
+                    </div>
+                </section>
+                <!-- Canvas Settings -->
+                <section class="collapsible">
+                    <input type="checkbox" name="collapse2" id="handle2">
+                    <h2 class="handle">
+                    <label for="handle2">Canvas</label>
+                    </h2>
+                    <div class="content">
+                        Text: <input id="text-color" class="jscolor" value="000000"><br />
+                        Background: <input id="background-color" class="jscolor" value="292929"><br />
+                        State Color (Inner): <input id="state-inner-color" class="jscolor" value="E5E5E5"><br />
+                        State Color (Outer): <input id="state-outer-color" class="jscolor" value="535453"><br />
+                        State Color (Accept): <input id="state-accept-color" class="jscolor" value="A1FFAC"><br />
+                    </div>
+                </section>
+                <!-- Animation Settings -->
+                <section class="collapsible">
+                    <input type="checkbox" name="collapse3" id="handle3">
+                    <h2 class="handle">
+                    <label for="handle3">Animation</label>
+                    </h2>
+                    <div class="content">
+                        Slow <input type="range" min="1" max="100" value="50" class="slider" id="animation-speed"> Fast
+                    </div>
+                </section>
+            </div>
+            <div id="bottom-settings">
+                <hr>
+                <button id="save-settings">Save</button>
+            </div>
         </div>
     </view>
     <!----------------------->
@@ -63,7 +91,7 @@
         <!-- Open Tools Button -->
         <div id="open-tools-draggable">
             <a id="open-tools" class="button-float attention" href="#"">
-                <i class="fas fa-toolbox"></i>
+                <i class=" fas fa-toolbox"></i>
             </a>
         </div>
         <!-- Tools -->
@@ -125,7 +153,7 @@
                 </tab>
                 <!-- Acceptor (tab) -->
                 <tab id="acceptor" class="disabled">
-                    <code id="machine-data">
+                    <code id="machine-data" style="overflow: auto;">
                         Example Strings
                         <br>
                         ----------------
@@ -165,8 +193,8 @@
                         <button id="save-storage">Save</button>
                         <button id="delete-storage">Delete</button>
                     </div>
-                </div>
             </div>
+        </div>
         </div>
         <!-- Canvas-->
         <div class="canvas" id="canvas">
@@ -178,6 +206,8 @@
                 <a id="quick-new-e-transition" style="display: none;">New E-Transition</a>
                 <a id="quick-remove-state">Delete State</a>
                 <a id="quick-remove-transition">Delete Transition</a>
+                <hr>
+                <a id="quick-convert">Convert</a>
             </div>
         </div>
     </view>

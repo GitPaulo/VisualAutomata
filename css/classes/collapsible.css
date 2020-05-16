@@ -1,0 +1,78 @@
+/* CSS for the main interaction */ 
+.collapsible>input[type="checkbox"] {
+    position: absolute;
+    left: -100vw;
+}
+
+.collapsible .content {
+    overflow-y: hidden;
+    height: 0;
+    transition: height 0.3s ease;
+}
+
+.collapsible>input[type="checkbox"]:checked~.content {
+    height: auto;
+    overflow: visible;
+}
+
+.collapsible label {
+    display: block;
+    font-size: .9vw;
+    font-weight: bold;
+}
+
+/*
+ Styling
+*/
+
+.collapsible {
+    margin-bottom: 1em;
+}
+
+.collapsible>input[type="checkbox"]:checked~.content {
+    padding: 15px;
+    border: 1px solid #e8e8e8;
+    border-top: 0;
+}
+
+.collapsible .handle {
+    margin: 0;
+    font-size: 1.125em;
+    line-height: 1.2em;
+}
+
+.collapsible label {
+    color: #333;
+    cursor: pointer;
+    font-weight: normal;
+    padding: 15px;
+    background: #e8e8e8;
+}
+
+.collapsible label:hover,
+.collapsible label:focus {
+    background: #d8d8d8;
+}
+
+.collapsible .handle label:before {
+    content: "↓";
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 4px;
+    font-size: .75vw;
+    line-height: 1.556em;
+    vertical-align: middle;
+}
+
+.collapsible>input[type="checkbox"]:checked~.handle label:before {
+    content: "↑";
+}
+
+.collapsible {
+    max-width: 65em;
+}
+
+.collapsible p:last-child {
+    margin-bottom: 0;
+}

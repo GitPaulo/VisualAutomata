@@ -6,6 +6,7 @@ var quickBuilderNTElement = document.getElementById("quick-new-transition");
 var quickBuilderNETElement = document.getElementById("quick-new-e-transition");
 var quickBuilderRSElement = document.getElementById("quick-remove-state");
 var quickBuilderRTElement = document.getElementById("quick-remove-transition");
+var quickConvertElement = document.getElementById("quick-convert");
 
 canvasElement.onclick = function (event) {
     if (event.ctrlKey) {
@@ -38,4 +39,8 @@ quickBuilderRSElement.onclick = function () {
 }
 
 quickBuilderRTElement.onclick = function () {
+}
+
+quickConvertElement.onclick = function () {
+    
 }

@@ -136,7 +136,7 @@ window.renderer = {
         
             // Add to machine
             try {
-                state = this.machine.addEmptyTransition(source, target, symbol);
+                state = this.machine.addEmptyTransition(source, target);
             } catch (msg) {
                 alert(msg);
                 return;
@@ -154,7 +154,7 @@ window.renderer = {
             this.update();
 
             // Log
-            logger.log(`Empty Transition (${source}, ${target}, ${symbol}) added to machine.`);
+            logger.log(`Empty Transition (${source}, ${target}) added to machine.`);
 
             return graphic;
         },
