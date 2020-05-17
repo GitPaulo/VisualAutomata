@@ -1,17 +1,32 @@
+const STORAGE_PREFIX = '%STORAGE%_'; 
 const Storage = (function () {
     function Storage () {        
-        // Create space in cache
-        localStorage[Storage.KEY] = localStorage[Storage.KEY] || new Map();
-
-        // Reference
-        this.storage = localStorage[Logger.key];
-
-        this.save = function (id, data) {
-            localStorage[Storage.KEY].set(id, { data, date: Date.now() });
+        this.save = function (id, stringData) {
+            localStorage[STORAGE_PREFIX + id] = stringData;
         }
 
         this.load = function (id) {
-            return localStorage[Storage.KEY].get(id);
+            return localStorage[STORAGE_PREFIX + id];
+        }
+
+        this.delete = function (id) {
+            delete localStorage[STORAGE_PREFIX + id];
+        }
+
+        this.array = function () {
+            let array = [];
+
+            for (var key in localStorage) {
+                if (!localStorage.hasOwnProperty(key)) {
+                    continue;
+                }
+
+                if (key.startsWith(STORAGE_PREFIX)) {
+                    array.push({ id: key.replace(STORAGE_PREFIX, ""), value: localStorage[key]});
+                }
+            }
+
+            return array;
         }
     }
 
@@ -28,5 +43,3 @@ const Storage = (function () {
         }
     };
 })();
-
-Storage.KEY = "storage";

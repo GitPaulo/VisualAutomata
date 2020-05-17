@@ -71,9 +71,15 @@ class VisualAutomaton {
         this.graphics.states.delete(id);
 
         // Remove all state related transitions
-        for (let graphic of Array.from(this.graphics.transitions.values()) {
-            // TODO    
+        for (const [key, graphic] of this.graphics.transitions.entries()) {
+            if (graphic.sourceGraphic.id === id || graphic.targetGraphic.id === id) {
+                this.graphics.transitions.delete(key);
+            }
         }
+    }
+
+    transitionKey(sourceId, targetId, transitionString) {
+        return sourceId + targetId + transitionString;
     }
 
     registerTransition (sourceId, targetId, transitionString) {
@@ -89,8 +95,11 @@ class VisualAutomaton {
             throw new Error(`Could not find target graphic for id: ${targetId}`);
         } 
 
+        // Key calculated by concatonation of the strings
+        let key = this.transitionKey(sourceId, targetId, transitionString);
+
         this.graphics.transitions.set(
-            sourceId + targetId,
+            key,
             new TransitionGraphic(
                 sourceGraphic,
                 targetGraphic,
@@ -99,8 +108,8 @@ class VisualAutomaton {
         );
     }
 
-    unregisterTransition(sourceId, targetId) {
-        let key = sourceId + targetId;
+    unregisterTransition(sourceId, targetId, transitionString) {
+        let key = this.transitionKey(sourceId, targetId, transitionString);
 
         if (!this.graphics.transitions.has(key)) {
             throw new Error(`Could not unregister transition with id: ${key}`);

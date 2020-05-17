@@ -47,11 +47,13 @@ quickBuilderNETElement.onclick = function () {
 }
 
 quickBuilderRSElement.onclick = function () {
+    controller.removeState();
 }
 
 quickBuilderRTElement.onclick = function () {
+    controller.removeTransition();
 }
 
 quickConvertElement.onclick = function () {
-    
+    controller.convertMachine();
 }

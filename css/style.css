@@ -210,6 +210,11 @@ view {
     font-size: 0.8vw;
 }
 
+#storage > .content > table td {
+    text-align: center;
+    font-size: 0.8vw;
+}
+
 #storage > .control > button {
     float: left;
     width: 33.3%;

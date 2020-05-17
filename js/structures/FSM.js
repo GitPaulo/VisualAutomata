@@ -55,7 +55,39 @@ class FSM extends VisualAutomaton {
     _unbuild (state) {
         state = this._resolve(state);
 
+        // delete all source -> s transitions
         delete this.transitions[state.id];
+
+        // delete all s -> source transitions
+        for (let sourceKey in this.transitions) {
+            // skip loop if the property is from prototype
+            if (!this.transitions.hasOwnProperty(sourceKey)) {
+                continue;
+            }
+
+            let targetsArrays = this.transitions[sourceKey];
+            
+            for (let symbol in targetsArrays) {
+                // skip loop if the property is from prototype
+                if (!targetsArrays.hasOwnProperty(symbol)) {
+                    continue;
+                }
+
+                let targetsArray = targetsArrays[symbol];
+
+                if (targetsArray.includes(state)) {
+                    // Remove target state form array of states
+                    let transitionStates = this.transitions[sourceKey][symbol];
+                    let index = transitionStates.indexOf(state);
+
+                    if (index >= 0) {
+                        transitionStates.splice(index, 1);
+                    }
+
+                    console.log("SAIKO")
+                }
+            }
+        }
     }
 
     _build (state) {
@@ -113,15 +145,19 @@ class FSM extends VisualAutomaton {
             throw new Error('State does not exist.');
         }
 
+        if (state === this.startState) {
+            throw new Error('Can\'t remove start state!');
+        }
+
         // remove state
-        this.states.remove(state.id);
+        this.states.delete(state.id);
 
         // Unbuilt transition slot
         this._unbuild(state)
 
         // unregister graphic
         super.unregisterState(
-            newState.id, 
+            state.id
         );
     }
 
@@ -215,13 +251,18 @@ class FSM extends VisualAutomaton {
         }
 
         // Remove target state form array of states
-        delete this.transitions[source.id][symbol]
-            [this.transitions[source.id][symbol].indexOf(target)];
+        let transitionStates = this.transitions[source.id][symbol];
+        let index = transitionStates.indexOf(target);
+
+        if (index >= 0) {
+            transitionStates.splice(index, 1);
+        }
 
         // unregister graphic
         super.unregisterTransition(
             source.id,
             target.id,
+            symbol
         );
     }
     
@@ -296,10 +337,12 @@ class FSM extends VisualAutomaton {
                 this.graphics.states.get(cstate.id).highlight(false);
 
                 for (let nstate of nextStates) {
+                    let tkey = this.transitionKey(cstate.id, nstate.id, symbol);
+
                     // Highlight a transition to next state
-                    this.graphics.transitions.get(cstate.id + nstate.id).highlight();
+                    this.graphics.transitions.get(tkey).highlight();
                     await sleep();
-                    this.graphics.transitions.get(cstate.id + nstate.id).highlight(false);
+                    this.graphics.transitions.get(tkey).highlight(false);
 
                     // Highlight a next state
                     this.graphics.states.get(nstate.id).highlight();

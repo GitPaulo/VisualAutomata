@@ -106,10 +106,21 @@ class CanvasController {
         }
     }
 
-    removeState (id) {
+    removeState () {
         if (!this.machine) {
             throw new Error("Machine not loaded in controller.");
         }
+
+        let id = String(prompt("Input the state ID?"));
+
+        try {
+            this.machine.removeState(id);
+        } catch (msg) {
+            return alert(msg);
+        }
+
+        // Update
+        this._stage();
 
         // Log
         logger.log(`State (${id}) removed from machine along with all associated transitions.`);
@@ -120,6 +131,7 @@ class CanvasController {
             throw new Error("Machine not loaded in controller.");
         }
 
+        // TODO
     }
 
     newTransition () {
@@ -146,9 +158,25 @@ class CanvasController {
     }
 
     removeTransition () {
-         if (!this.machine) {
+        if (!this.machine) {
             throw new Error("Machine not loaded in controller.");
         }
+
+        let source = prompt("Source state ID?");
+        let target = prompt("Target state ID?");
+        let symbol = prompt("Transition symbol?");
+
+        try {
+            this.machine.removeTransition(source, target, symbol);
+        } catch (msg) {
+            return alert(msg);
+        }
+
+        // Update
+        this._stage();
+
+        // Log
+        logger.log(`Transition (${source}, ${target}, ${symbol}) removed from machine.`);
     }
 
     editTransition () {
@@ -156,6 +184,7 @@ class CanvasController {
             throw new Error("Machine not loaded in controller.");
         }
 
+        // TODO
     }
 
     animate (string) {

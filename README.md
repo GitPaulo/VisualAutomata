@@ -7,11 +7,16 @@ A front-end only application that generates, displays and animates a subset of t
 - Where possible, automatic conversion between state machines.
 
 ## Try It Out
-Since everything is done on the client, [hop straight in](www.google.com)!
+Since everything is done on the client, [hop straight in](https://gitpaulo.github.io/VisualAutomata/)!
 
 ## To do
-\[ ] Implement PDA
-\[ ] e-NFA -> NFA conversion
+
+- [x] GUI interface
+- [x] DFA, NFA, e-NFA implementation
+- [x] Graphical components
+- [x] NFA -> DFA conversion
+- [ ] e-NFA -> NFA conversion
+- [ ] Implement PDA
 
 ## Preview
 

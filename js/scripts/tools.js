@@ -55,8 +55,32 @@ const toolsUpdate = (selector="all") => {
             logAreaElement.value = logger.history;
         case "storage":
         case "all":
-            toolsElement.style.display = "block";
-            toolsOpenElement.classList.remove("attention");
+            // Load saved machines
+            let saved = storage.array();
+
+            // Clear current
+            let tableRef = storageTableElement.getElementsByTagName('tbody')[0];
+            tableRef.innerHTML = "";       
+
+            for (let sdata of saved) {
+                smachine = JSON.parse(sdata.value);
+                
+                // Make cells
+                var newRow = tableRef.insertRow();
+                var idCell = newRow.insertCell(0);
+                var typeCell = newRow.insertCell(1);
+                var sizeCell = newRow.insertCell(2);
+                var dateCell = newRow.insertCell(3);
+
+                // ID
+                idCell.appendChild(document.createTextNode(sdata.id));
+                // Type
+                typeCell.appendChild(document.createTextNode(smachine.type));
+                // Size
+                sizeCell.appendChild(document.createTextNode(sizeOf(smachine)));
+                // Date
+                dateCell.appendChild(document.createTextNode('Unknown'));
+            }
         break;
         default: 
             throw new Error("Invalid tools update selector");
@@ -65,6 +89,7 @@ const toolsUpdate = (selector="all") => {
 
 toolsOpenElement.onclick = function () {
     toolsElement.style.display = "block";
+    toolsOpenElement.classList.remove("attention");
 
     /* Update all tabs */
     toolsUpdate();
@@ -160,7 +185,18 @@ exportLoggerElement.onclick = function () {
  */
 
 loadStorageElement.onclick = function () {
+    let id = prompt("Enter machine id:");
+    let serializedMachine = storage.load(id);
 
+    if (!serializedMachine) {
+        return alert(`Couldnt find machine of id: ${id}`);
+    }
+
+    let machineNoGraphics = JSON.parse(serializedMachine);
+    console.log(machineNoGraphics);
+
+    // Log
+    logger.log(`Loaded machine of id: ${id}`);
 }
 
 saveStorageElement.onclick = function () {
@@ -168,9 +204,38 @@ saveStorageElement.onclick = function () {
         return alert("There must be an active machine to save.");
     }
 
+    let id = prompt("Name the machine?");
 
+    if (!id) {
+        return;
+    }
+
+    let serializedMachine = JSON.stringify(controller.machine);
+
+    // Store
+    storage.save(id, serializedMachine);
+
+    // Log
+    logger.log(`Stored current machine as id: ${id}`);
+
+    // Update
+    toolsUpdate("storage");
 }
 
-deleteStorageElement.onclick = function () {
+deleteStorageElement.onclick = function () {    
+    let id = prompt("Enter machine id:");
+    let serializedMachine = storage.load(id);
 
+    if (!serializedMachine) {
+        return alert(`Couldnt find machine of id: ${id}`);
+    }
+
+    // Delete
+    storage.delete(id);
+
+    // Log
+    logger.log(`Deleted machine of id: ${id}`);
+
+    // Update
+    toolsUpdate("storage");
 }

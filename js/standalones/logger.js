@@ -1,11 +1,12 @@
+const LOG_KEY = 'LOGS';
+
 const Logger = (function () {
     function Logger () {
-
         // Prep cache
-        localStorage[Logger.key] = localStorage[Logger.key] || "";
+        localStorage[LOG_KEY] = localStorage[LOG_KEY] || "";
         
         // Reference
-        this.history = localStorage[this.STORAGE_KEY];
+        this.history = localStorage[LOG_KEY];
         
         this.generateStamp = function () {
             return '[' + new Date().toLocaleString() + ']';
@@ -20,11 +21,11 @@ const Logger = (function () {
             
             // Log
             this.print(logStr);
-            localStorage[Logger.key] += logStr;
+            localStorage[LOG_KEY] += logStr;
         }
 
         this.clear = function () {
-            localStorage[Logger.key] = "";
+            localStorage[LOG_KEY] = "";
         }
     }
 
@@ -41,6 +42,3 @@ const Logger = (function () {
         }
     };
 })();
-
-Logger.key = "logs";
-Logger.prefix = "[LOG]";
