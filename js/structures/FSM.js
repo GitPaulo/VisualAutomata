@@ -293,18 +293,18 @@ class FSM extends VisualAutomaton {
                 // Highlight current state
                 this.graphics.states.get(cstate.id).highlight();
                 await sleep();
-                this.graphics.states.get(cstate.id).reset();
+                this.graphics.states.get(cstate.id).highlight(false);
 
                 for (let nstate of nextStates) {
                     // Highlight a transition to next state
                     this.graphics.transitions.get(cstate.id + nstate.id).highlight();
                     await sleep();
-                    this.graphics.transitions.get(cstate.id + nstate.id).reset();
+                    this.graphics.transitions.get(cstate.id + nstate.id).highlight(false);
 
                     // Highlight a next state
                     this.graphics.states.get(nstate.id).highlight();
                     await sleep();
-                    this.graphics.states.get(nstate.id).reset();
+                    this.graphics.states.get(nstate.id).highlight(false);
 
                     // Log
                     logger.log(`Going from ${cstate.id} to ${nstate.id} on symbol ${symbol}`);

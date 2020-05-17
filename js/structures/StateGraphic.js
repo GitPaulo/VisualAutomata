@@ -13,6 +13,7 @@ class StateGraphic extends Graphic {
         // Properties
         this.id = id;
         this.accepting = accepting;
+        this.highlighted = false;
         this.marked = false;
 
         // Events
@@ -84,6 +85,10 @@ class StateGraphic extends Graphic {
             borderColor = 0x640082;
         }
 
+        if (this.highlighted) {
+            baseColor = 0xf24949;
+        }
+
         // ID
         let idText = new PIXI.Text(
             this.id,
@@ -123,21 +128,19 @@ class StateGraphic extends Graphic {
         this.endFill();
     }
 
-    highlight (color=0xf24949) {
-        this.update(
-            {
-                baseColor:color
-            }
-        );
-    }
-
-    reset () {
-        this.mark(false);
+    highlight (bool=true) {
+        this.highlighted = Boolean(bool);
         this.update({});
     }
 
     mark (bool=true) {
         this.marked = Boolean(bool);
         this.update({});
+    }
+
+    reset () {
+        this.highlight(false);
+        this.mark(false);
+        super.reset();
     }
 }
