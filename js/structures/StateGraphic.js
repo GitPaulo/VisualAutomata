@@ -133,7 +133,7 @@ class StateGraphic extends Graphic {
 
     reset () {
         this.mark(false);
-        super.reset();
+        this.update({});
     }
 
     mark (bool=true) {
