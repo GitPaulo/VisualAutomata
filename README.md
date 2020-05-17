@@ -11,12 +11,16 @@ Since everything is done on the client, [hop straight in](https://gitpaulo.githu
 
 ## To do
 
-- [x] GUI interface
+- [x] Start View (UI Elements)
+- [x] Main View (UI Elements)
 - [x] DFA, NFA, e-NFA implementation
 - [x] Graphical components
+- [x] Canvas events
 - [x] NFA -> DFA conversion
+- [x] Loader, Acceptor, Logger & Storage functionality.
 - [ ] e-NFA -> NFA conversion
 - [ ] Implement PDA
+- [ ] Loading cyclic serialised machines.
 
 ## Preview
 
