@@ -9,6 +9,12 @@ A front-end only application that generates, displays and animates a subset of t
 ## Try It Out
 Since everything is done on the client, [hop straight in](www.google.com)!
 
+## To do
+\[ ] Implement PDA
+\[ ] e-NFA -> NFA conversion
+
 ## Preview
 
-(TBA)
+![](.github/preview1.png)
+![](.github/preview2.png)
+![](.github/preview3.png)

@@ -67,7 +67,13 @@ class VisualAutomaton {
             throw new Error(`Could not unregister transition with id: ${key}`);
         }
         
+        // Remove state graphic
         this.graphics.states.delete(id);
+
+        // Remove all state related transitions
+        for (let graphic of Array.from(this.graphics.transitions.values()) {
+            // TODO    
+        }
     }
 
     registerTransition (sourceId, targetId, transitionString) {
