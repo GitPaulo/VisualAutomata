@@ -24,9 +24,9 @@ class Graphic extends PIXI.Graphics {
             child.destroy();
         }
     }
-
-    reset () {
-        this.update({});
+    
+    _init () {
+        throw new Error("Not implemented");
     }
     
     update () {

@@ -8,6 +8,26 @@ class VisualAutomaton {
         }
     } 
 
+    highlightGraphics () {
+        for (let graphic of [
+                ...Array.from(this.graphics.transitions.values()),
+                ...Array.from(this.graphics.states.values())
+            ]
+        ) {
+            graphic.highlight();
+        }
+    }
+
+    resetGraphics () {
+        for (let graphic of [
+                ...Array.from(this.graphics.transitions.values()),
+                ...Array.from(this.graphics.states.values())
+            ]
+        ) {
+            graphic.reset();
+        }
+    }
+
     prepareGraphics () {
         let stage = [];
 

@@ -30,12 +30,18 @@ class FSM extends VisualAutomaton {
         this.currentStates = [];
         this.states = new Map();
         this.transitions = {};
-    
+        
+        // Start state id
+        let id = 'A';
+
         // New state
-        let startState = this.addState('A', false);
+        this.startState = this.addState(id, false);
+
+        // Mark start state
+        this.graphics.states.get(id).mark();
         
         // Start state
-        this.currentStates.push(startState); 
+        this.currentStates.push(this.startState); 
     }
     
     _resolve (state) {
@@ -69,7 +75,13 @@ class FSM extends VisualAutomaton {
     }
 
     reset () {
-        this.currentStates = [this.states.get('A')];
+        this.currentStates = [this.startState];
+
+        // Reset all graphics
+        super.resetGraphics();
+
+        // Mark current state
+        this.graphics.states.get(this.startState.id).mark();
     }
 
     addState (id, accepting) {
@@ -265,55 +277,67 @@ class FSM extends VisualAutomaton {
     }
 
     async accept (string) {
-        let highlightCS = (color) => {
-            console.log("HIGH", this.currentStates)
-            for (let cstate of this.currentStates) {
-                let g = this.graphics.states.get(cstate.id);
-                console.log(g)
-                g.highlight(color);
-            }
-        }
-
-        let resetCS = () => {
-            for (let cstate of this.currentStates) {
-                let g = this.graphics.states.get(cstate.id);
-                g.reset();
-            }
-        }
-
+        // Log
+        logger.log(`Marked current states: ${this.currentStates}`);
+    
         // Go through input string
         for (let i = 0; i < string.length; i++) {
+            // Store and Log
             let symbol = string.charAt(i);
-
-            // Log
             logger.log('Machine reading symbol: ' + symbol);
 
-            // Highlight current states
-            highlightCS();
-            await sleep();
-            resetCS();
+            // Highlight all paths
+            for (let cstate of this.currentStates) {
+                let nextStates = this.transitions[cstate.id][symbol];
 
+                // Highlight current state
+                this.graphics.states.get(cstate.id).highlight();
+                await sleep();
+                this.graphics.states.get(cstate.id).reset();
+
+                for (let nstate of nextStates) {
+                    // Highlight a transition to next state
+                    this.graphics.transitions.get(cstate.id + nstate.id).highlight();
+                    await sleep();
+                    this.graphics.transitions.get(cstate.id + nstate.id).reset();
+
+                    // Highlight a next state
+                    this.graphics.states.get(nstate.id).highlight();
+                    await sleep();
+                    this.graphics.states.get(nstate.id).reset();
+
+                    // Log
+                    logger.log(`Going from ${cstate.id} to ${nstate.id} on symbol ${symbol}`);
+                }
+            }
+
+            // Reset all current staes
+            for (let cstate of this.currentStates) {
+                this.graphics.states.get(cstate.id).mark(false); 
+            }
+
+            // Move machine to next state
             this.move(symbol);
+
+            // Mark all current new states
+            for (let cstate of this.currentStates) {
+                this.graphics.states.get(cstate.id).mark(); 
+            }
+
+            await sleep();
         }
 
-        let hcolor = null; 
         if (this.verify()) {
-            hcolor = 0x00ff00;
             alert("Accepted");
         } else {
-            hcolor = 0xff3300;
             alert("Rejected!");
         }
 
-        highlightCS(hcolor);
-        await sleep();
-        resetCS();
-
-        let reset = confirm("Reset automaton?");
+        let reset = confirm("Reset automaton state?");
 
         if (reset) {
             this.reset();
-            alert("Reset machine!");
+            alert("Machine has reset!");
         }
     }
 

@@ -13,6 +13,7 @@ class StateGraphic extends Graphic {
         // Properties
         this.id = id;
         this.accepting = accepting;
+        this.marked = false;
 
         // Events
         this.on('pointerdown', this._onDragStart);
@@ -78,6 +79,11 @@ class StateGraphic extends Graphic {
         // update attached
         super.updateAttached();
 
+        // Marked color
+        if (this.marked) {
+            borderColor = 0x640082;
+        }
+
         // ID
         let idText = new PIXI.Text(
             this.id,
@@ -123,5 +129,15 @@ class StateGraphic extends Graphic {
                 baseColor:color
             }
         );
+    }
+
+    reset () {
+        this.mark(false);
+        super.reset();
+    }
+
+    mark (bool=true) {
+        this.marked = Boolean(bool);
+        this.update({});
     }
 }
