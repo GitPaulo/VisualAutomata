@@ -1,3 +1,7 @@
+/**
+ * A class defining how to draw a transition edge in the canvas graph.
+ * This class works with the PixiJS library.
+ */
 class TransitionGraphic extends Graphic {
     constructor (
         sourceGraphic,
@@ -127,7 +131,6 @@ class TransitionGraphic extends Graphic {
     
         normal.x *= 10;
         normal.y *= 10;
-
         // === Draw Text
         let idText = new PIXI.Text(
             "'" + this.transitionString + "'",
@@ -138,6 +141,13 @@ class TransitionGraphic extends Graphic {
                 align: 'center'
             }
         );
+
+        // Self Cycle!!
+        if (this.sourceGraphic === this.targetGraphic) {
+            
+            return;
+        }
+
 
         // Set text graphic pos
         idText.x = controlPoint.x - fontSize/2;

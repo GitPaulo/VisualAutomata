@@ -5,11 +5,11 @@ tab {
 
 tab .content {
     overflow: auto;
-    height: 85%;
+    height: 88%;
 }
 
 tab .control {
-    height: 15%;
+    height: 12%;
 }
 
 .tabs {

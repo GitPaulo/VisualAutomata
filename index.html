@@ -147,10 +147,12 @@
                         </select>
                         <h5>Alphabet</h5>
                         <h7>Note: Separate substrings by comma.</h7>
-                        <input type="text" placeholder="1,0" id="automaton-alphabet">
+                        <input type="text" value="1,0" placeholder="1,0" id="automaton-alphabet">
+                        <h5>Start State</h5>
+                        <input type="text" value="A" placeholder="A" id="automaton-ss-id">
                         <div>
-                            <input type="checkbox" id="automaton-use-regex">
-                            <label class="label-inline" for="confirmField">Use RegEx?</label>
+                            <input type="checkbox" id="automaton-ss-accepting">
+                            <label class="label-inline" for="confirmField">Accepting?</label>
                         </div>
                     </div>
                     <div class="control">

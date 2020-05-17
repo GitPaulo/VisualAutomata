@@ -1,9 +1,17 @@
+/**
+ * This class defines a data structure that represents
+ * all Finite State Machines
+ *  - DFA
+ *  - NFA
+ *  - e-NFA
+ */
 class FSM extends VisualAutomaton {
     constructor (
         alphabet,
+        startStateLiteral = { id: "A", accepting: false },
         type = FSM.TYPES.DFA
     ) {
-        // (Machine does nothing as of now)
+        // Required super call
         super();
 
         if (!alphabet) {
@@ -19,14 +27,14 @@ class FSM extends VisualAutomaton {
         this.type = type;
 
         // initialise variants
-        this._init();
+        this._init(startStateLiteral);
     }
     
     get onDeadState () {
         return this.currentStates.length <= 0;
     }
 
-    _init () {
+    _init (startStateLiteral) {
         this.currentStates = [];
         this.states = new Map();
         this.transitions = {};
@@ -35,7 +43,10 @@ class FSM extends VisualAutomaton {
         let id = 'A';
 
         // New state
-        this.startState = this.addState(id, false);
+        this.startState = this.addState(
+            startStateLiteral.id, 
+            startStateLiteral.accepting
+        );
 
         // Mark start state
         this.graphics.states.get(id).mark();
@@ -348,6 +359,10 @@ class FSM extends VisualAutomaton {
                     this.graphics.states.get(nstate.id).highlight();
                     await sleep();
                     this.graphics.states.get(nstate.id).highlight(false);
+
+                    // Mark next state
+                    this.graphics.states.get(nstate.id).mark();
+                    await sleep();
 
                     // Log
                     logger.log(`Going from ${cstate.id} to ${nstate.id} on symbol ${symbol}`);

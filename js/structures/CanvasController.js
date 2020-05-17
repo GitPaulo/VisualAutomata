@@ -1,4 +1,6 @@
 /**
+ * This class bridges the GUI <--> Machine <--> Canvas
+ * All canvas operations pass through here
  * Key Components
  * - canvas
  * - machine

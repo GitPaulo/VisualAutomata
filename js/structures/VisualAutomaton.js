@@ -1,5 +1,11 @@
-// Place holder
-// Will be used when implementing more than just FSMs
+/**
+ * This class is the parent of all machine classes:
+ *  - FSMs (DFA, NFA, e-NFA)
+ *  - PDA
+ *  - etc...
+ * 
+ *  It represents any automaton that can be visualised by the application.
+ */
 class VisualAutomaton { 
     constructor () {
         this.graphics = {

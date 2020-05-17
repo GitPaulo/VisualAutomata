@@ -1,3 +1,9 @@
+/**
+ * This class represents a custom canvas Graphic.
+ * This is the parent class of:
+ *  - StateGraphic
+ *  - TransitionGraphic
+ */
 class Graphic extends PIXI.Graphics {
     constructor (...args) {
         super(...args);

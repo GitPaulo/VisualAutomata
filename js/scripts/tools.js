@@ -18,6 +18,8 @@ var toolsOpenElement = document.getElementById("open-tools");
 var loaderElement = document.getElementById("loader");
 var automatonSelectorElement = document.getElementById("automaton-selector");
 var automatonAlphabetElement = document.getElementById("automaton-alphabet");
+var automatonSSIdElement = document.getElementById("automaton-ss-id");
+var automatonSSAcceptingElement = document.getElementById("automaton-ss-accepting");
 var loadLoaderElement = document.getElementById("load-loader");
 
 // Acceptor
@@ -107,18 +109,23 @@ toolsCloseElement.onclick = function () {
 automatonSelectorElement.onchange = function () {
     if (this.options[this.selectedIndex].value === 'PDA') {
         alert("PDA not yet implemented!");
+        this.value = "DFA";
     }
-
-    this.value = "DFA";
 }
 
 loadLoaderElement.onclick = function () {
     let automatonType = automatonSelectorElement.value;
     let alphabetArr = automatonAlphabetElement.value.trim().split(',');
+    let automatonSSId = automatonSSIdElement.value;
+    let automatonSSAccepting = automatonSSAcceptingElement.checked;
 
-    // Check for empty foe;d
+    // Check for empty field!
     if (alphabetArr.length <= 0) {
         return alert("Invalid alphabet input!");
+    }
+
+    if (automatonSSId.length <= 0){
+        return alert("Invalid start state input!");
     }
 
     // Currently we only have FSM
@@ -126,7 +133,8 @@ loadLoaderElement.onclick = function () {
     controller.loadMachine(
         new FSM(
             alphabetArr,
-            FSM.TYPES.DFA[automatonType]
+            { id: automatonSSId, accepting: automatonSSAccepting },
+            FSM.TYPES[automatonType]
         )
     );
 
@@ -144,6 +152,9 @@ loadLoaderElement.onclick = function () {
     
     // Log
     logger.log(`Automaton type (${automatonType}) structure loaded.`);
+
+    // Notify
+    alert(`Loaded ${controller.machine.type} designer!`);
 }
 
 /** 

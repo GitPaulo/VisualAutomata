@@ -1,3 +1,7 @@
+/**
+ * A class defining how to draw a state node in the canvas graph.
+ * This class works with the PixiJS library.
+ */
 class StateGraphic extends Graphic {
     constructor (
         id,
