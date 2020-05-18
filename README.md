@@ -27,3 +27,4 @@ Since everything is done on the client, [hop straight in](https://gitpaulo.githu
 ![](.github/preview1.png)
 ![](.github/preview2.png)
 ![](.github/preview3.png)
+![](.github/video.gif)
