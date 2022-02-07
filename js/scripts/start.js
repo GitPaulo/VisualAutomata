@@ -27,19 +27,19 @@ githubLinkElement.onclick = () => {
 }
 
 settingsOpenElement.onclick = () => {
-    settingsElement.style.display = "block";
+    settingsElement.style.display = "flex";
 }
 
 startToggleElement.onclick = () => {
     let display = startElement.style.display;
 
     startElement.style.display =
-        (display === "none" && "block") ||
-        (display === "block" && "none") ||
+        (display === "none" && "flex") ||
+        (display === "flex" && "none") ||
         "none";
 
     if (startElement.style.display === "none") {
-        mainElement.style.display = "block";
+        mainElement.style.display = "flex";
         // Create new canvas
         controller.new();
     } else {

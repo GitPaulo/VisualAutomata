@@ -15,7 +15,7 @@ canvasElement.onclick = function (event) {
         }
 
         // Make panel appear
-        quickBuilderElement.style.display = "block";
+        quickBuilderElement.style.display = "flex";
         quickBuilderElement.style.top = event.y;
         quickBuilderElement.style.left = event.x;
 

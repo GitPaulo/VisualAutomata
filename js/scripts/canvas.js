@@ -20,12 +20,11 @@ if (!PIXI.utils.isWebGLSupported()) {
 window.controller = new CanvasController(
     "pixijs-view",
     {
-        width: window.innerWidth,                           // default: 800
-        height: window.innerHeight,                         // default: 600
         antialias: Boolean(SETTINGS.application.antialias), // default: false
         transparent: false,                                 // default: false
         resolution: 1,                                      // default: 1
-        backgroundColor: SETTINGS.canvas.backgroundColor
+        backgroundColor: SETTINGS.canvas.backgroundColor,
+        resizeTo: window 
     }
 );
 
