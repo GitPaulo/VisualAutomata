@@ -260,6 +260,7 @@ view {
 
 #quick-builder {
     display: none;
+    flex-direction: column;
     position: absolute;
     z-index: 999;
     background-color: white;
